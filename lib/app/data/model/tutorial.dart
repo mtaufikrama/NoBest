@@ -4,8 +4,10 @@ class TutorialModel {
   bool? listFood;
   bool? generateFood;
   bool? inputProfile;
+  bool? finish;
   TutorialModel({
     this.generateFood,
+    this.finish,
     this.homepage,
     this.listFood,
     this.profile,
@@ -17,6 +19,7 @@ class TutorialModel {
     homepage = json['homepage'];
     listFood = json['list_food'];
     profile = json['profile'];
+    finish = json['finish'];
     inputProfile = json['input_profile'];
   }
 
@@ -26,6 +29,7 @@ class TutorialModel {
     data['generate_food'] = generateFood;
     data['homepage'] = homepage;
     data['list_food'] = listFood;
+    data['finish'] = finish;
     data['input_profile'] = inputProfile;
     return data;
   }

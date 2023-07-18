@@ -56,6 +56,7 @@ class Storages {
         'generate_food', tutorial.generateFood ?? tutor.generateFood ?? false);
     await boxTutorial.put(
         'input_profile', tutorial.inputProfile ?? tutor.inputProfile ?? false);
+    await boxTutorial.put('finish', tutorial.finish ?? tutor.finish ?? false);
     Publics.controller.getTutorial.value = Storages.getTutorial;
     print(Publics.controller.getTutorial.value.toJson());
     return;

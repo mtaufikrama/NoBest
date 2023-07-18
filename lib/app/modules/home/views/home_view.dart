@@ -29,6 +29,11 @@ class HomeView extends StatefulWidget {
 
 class HomeViewState extends State<HomeView> {
   late TutorialCoachMark tutorialCoachMark;
+  late TutorialCoachMark tutorialCoachMark1;
+
+  GlobalKey keyGenerate = GlobalKey();
+  GlobalKey keyBMI = GlobalKey();
+  GlobalKey keyBMR = GlobalKey();
 
   GlobalKey keyTranslate = GlobalKey();
   GlobalKey keyProfile = GlobalKey();
@@ -41,6 +46,12 @@ class HomeViewState extends State<HomeView> {
     if (controller.getTutorial.value.homepage != true) {
       createTutorial();
       Future.delayed(Duration.zero, showTutorial);
+    } else {
+      if (controller.getProfile.value.age != null ||
+          controller.getProfile.value.age!.isNotEmpty) {
+        createTutorial1();
+        Future.delayed(Duration.zero, showTutorial1);
+      }
     }
     super.initState();
   }
@@ -111,6 +122,7 @@ class HomeViewState extends State<HomeView> {
                           child: AspectRatio(
                             aspectRatio: 1,
                             child: Card(
+                              key: keyBMI,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                                 side: const BorderSide(
@@ -222,6 +234,7 @@ class HomeViewState extends State<HomeView> {
                           child: AspectRatio(
                             aspectRatio: 1,
                             child: Card(
+                              key: keyBMR,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                                 side: const BorderSide(
@@ -236,8 +249,8 @@ class HomeViewState extends State<HomeView> {
                                     padding: const EdgeInsets.only(top: 5),
                                     child: Text(
                                       controller.getBahasa.value == 'id'
-                                          ? 'KKT'
-                                          : 'TDEE',
+                                          ? 'AMB'
+                                          : 'BMR',
                                       style: Font.regular(
                                         fontSize: 20.0,
                                         color: Warna.baseWhite,
@@ -493,6 +506,7 @@ class HomeViewState extends State<HomeView> {
                               )
                         : Center(
                             child: ElevatedButton.icon(
+                              key: keyGenerate,
                               onPressed: () => Get.toNamed(Routes.GENERATE),
                               icon: const ImageIcon(
                                 AssetImage(
@@ -577,6 +591,10 @@ class HomeViewState extends State<HomeView> {
     tutorialCoachMark.show(context: context);
   }
 
+  void showTutorial1() {
+    tutorialCoachMark1.show(context: context);
+  }
+
   void createTutorial() {
     tutorialCoachMark = TutorialCoachMark(
       targets: _createTargets(),
@@ -596,9 +614,27 @@ class HomeViewState extends State<HomeView> {
     );
   }
 
+  void createTutorial1() {
+    tutorialCoachMark1 = TutorialCoachMark(
+      targets: _createTargets1(),
+      textStyleSkip: Font.regular(),
+      textSkip: 'SKIP >>',
+      paddingFocus: 10,
+      opacityShadow: 0.5,
+      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+      onFinish: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(finish: true));
+        Get.toNamed(Routes.GENERATE);
+      },
+      onSkip: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(finish: true));
+        Get.toNamed(Routes.GENERATE);
+      },
+    );
+  }
+
   List<TargetFocus> _createTargets() {
     List<TargetFocus> targets = [];
-
     targets.add(
       TargetFocus(
         identify: "Translate",
@@ -611,7 +647,7 @@ class HomeViewState extends State<HomeView> {
             builder: (context, controller) {
               return teksLanguage(
                 "Translate button:\nUsed to select the language to be displayed on each slide. The default language is determined by your mobile phone.",
-                style: const TextStyle(
+                style: Font.regular(
                   color: Colors.white,
                 ),
               );
@@ -620,11 +656,11 @@ class HomeViewState extends State<HomeView> {
         ],
       ),
     );
-
     targets.add(
       TargetFocus(
         identify: "floating",
         keyTarget: keyFloating,
+        color: Warna.primary,
         alignSkip: Alignment.topRight,
         contents: [
           TargetContent(
@@ -641,11 +677,11 @@ class HomeViewState extends State<HomeView> {
         ],
       ),
     );
-
     targets.add(
       TargetFocus(
         identify: "Profile",
         keyTarget: keyProfile,
+        color: Warna.primary,
         alignSkip: Alignment.topRight,
         enableOverlayTab: true,
         contents: [
@@ -654,6 +690,75 @@ class HomeViewState extends State<HomeView> {
             builder: (context, controller) {
               return teksLanguage(
                 "Profile button:\nUsed to input data such as weight, height, age, etc., in order to determine the user's BMR (Basal Metabolic Rate) and suitable calorie deficit.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    return targets;
+  }
+
+  List<TargetFocus> _createTargets1() {
+    List<TargetFocus> targets = [];
+    targets.add(
+      TargetFocus(
+        identify: "BMI",
+        keyTarget: keyBMI,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return teksLanguage(
+                "BMI Chart:\nTo display the user's BMI chart and the corresponding results of their BMI.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        identify: "BMR",
+        keyTarget: keyBMR,
+        alignSkip: Alignment.topRight,
+        color: Warna.primary,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "BMR Chart:\nTo display the user's BMR chart and the results of subtracting the user's BMR with their calorie deficit.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        identify: "Generate",
+        keyTarget: keyGenerate,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        enableOverlayTab: true,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Generate Food Button:\nUsed to organize today's food from the inputted food list, based on the calorie requirements of the user's body calculated by subtracting the desired calorie deficit from the BMR formula.",
                 style: Font.regular(
                   color: Colors.white,
                 ),

@@ -13,6 +13,9 @@ import 'package:nobes/app/data/widget/refresh_page.dart';
 import 'package:nobes/app/routes/app_pages.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
+import '../../../data/model/tutorial.dart';
+import '../../../data/services/colors.dart';
+import '../../../data/services/getstorages.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends StatefulWidget {
@@ -25,9 +28,8 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   late TutorialCoachMark tutorialCoachMark;
 
-  GlobalKey keyTranslate = GlobalKey();
-  GlobalKey keyProfile = GlobalKey();
-  GlobalKey keyFloating = GlobalKey();
+  GlobalKey keyFoto = GlobalKey();
+  GlobalKey keyForm = GlobalKey();
 
   final controller = Get.put(ProfileController());
 
@@ -74,6 +76,7 @@ class _ProfileViewState extends State<ProfileView> {
                     aspectRatio: 1,
                     child: Obx(() {
                       return Container(
+                        key: keyFoto,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(1000),
                           image: controller.getProfile.value.image != null
@@ -96,14 +99,18 @@ class _ProfileViewState extends State<ProfileView> {
               ),
             ),
             Row(
+              key: keyForm,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    teksLanguage(
-                      'Name',
-                      style: Font.regular(fontSize: 18),
-                    ),
+                    controller.getProfile.value.name != null &&
+                            controller.getProfile.value.name!.isNotEmpty
+                        ? teksLanguage(
+                            'Name',
+                            style: Font.regular(fontSize: 18),
+                          )
+                        : Container(),
                     teksLanguage(
                       'Height',
                       style: Font.regular(fontSize: 18),
@@ -146,12 +153,15 @@ class _ProfileViewState extends State<ProfileView> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          ": ${controller.getProfile.value.name ?? 'null'}",
-                          style: Font.regular(fontSize: 18),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        controller.getProfile.value.name != null &&
+                                controller.getProfile.value.name!.isNotEmpty
+                            ? Text(
+                                ": ${controller.getProfile.value.name ?? 'null'}",
+                                style: Font.regular(fontSize: 18),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            : Container(),
                         Text(
                           ": ${controller.getProfile.value.height ?? 'null'} cm",
                           style: Font.regular(fontSize: 18),
@@ -219,26 +229,18 @@ class _ProfileViewState extends State<ProfileView> {
   void createTutorial() {
     tutorialCoachMark = TutorialCoachMark(
       targets: _createTargets(),
+      textStyleSkip: Font.regular(),
       textSkip: 'SKIP >>',
       paddingFocus: 10,
       opacityShadow: 0.5,
       imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-      onFinish: () {
-        print("finish");
+      onFinish: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(profile: true));
+        Get.offNamed(Routes.HOME);
       },
-      onClickTarget: (target) {
-        print('onClickTarget: $target');
-      },
-      onClickTargetWithTapPosition: (target, tapDetails) {
-        print("target: $target");
-        print(
-            "clicked at position local: ${tapDetails.localPosition} - global: ${tapDetails.globalPosition}");
-      },
-      onClickOverlay: (target) {
-        print('onClickOverlay: $target');
-      },
-      onSkip: () {
-        print("skip");
+      onSkip: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(profile: true));
+        Get.offNamed(Routes.HOME);
       },
     );
   }
@@ -247,86 +249,48 @@ class _ProfileViewState extends State<ProfileView> {
     List<TargetFocus> targets = [];
     targets.add(
       TargetFocus(
-        identify: "Profile",
-        keyTarget: keyProfile,
+        identify: "Foto",
+        keyTarget: keyFoto,
+        alignSkip: Alignment.topRight,
+        color: Warna.primary,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Profile photo:To display the user's photo.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        identify: "Form",
+        shape: ShapeLightFocus.RRect,
+        keyTarget: keyForm,
+        color: Warna.primary,
         alignSkip: Alignment.topRight,
         enableOverlayTab: true,
         contents: [
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "",
-                    style: Font.regular(
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
+              return teksLanguage(
+                "Profile Data:\nDisplaying user data that has been inputted on the data input page.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
               );
             },
           ),
         ],
       ),
     );
-
-    targets.add(
-      TargetFocus(
-        identify: "keyBottomNavigation2",
-        keyTarget: keyFloating,
-        alignSkip: Alignment.topRight,
-        contents: [
-          TargetContent(
-            align: ContentAlign.top,
-            builder: (context, controller) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Titulo lorem ipsum",
-                    style: Font.regular(
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-
-    targets.add(
-      TargetFocus(
-        identify: "keyBottomNavigation3",
-        keyTarget: keyTranslate,
-        alignSkip: Alignment.topRight,
-        contents: [
-          TargetContent(
-            align: ContentAlign.top,
-            builder: (context, controller) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Titulo lorem ipsum",
-                    style: Font.regular(
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-
     return targets;
   }
 }

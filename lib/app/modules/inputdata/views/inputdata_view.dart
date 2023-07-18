@@ -100,15 +100,32 @@ class _InputdataViewState extends State<InputdataView> {
                     Center(
                       child: IconButton(
                         onPressed: () {
-                          showBottomSheet(
+                          showModalBottomSheet(
                             context: context,
                             builder: (context) {
-                              return SizedBox(
+                              return Container(
                                 height: Get.height / 3,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
                                 child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
+                                    Divider(
+                                      color: Colors.grey,
+                                      endIndent: (Get.width / 2) - 50,
+                                      indent: (Get.width / 2) - 50,
+                                      thickness: 5,
+                                      height: 30,
+                                    ),
                                     Expanded(
                                       child: TextButton.icon(
+                                        style: TextButton.styleFrom(
+                                          shape: const RoundedRectangleBorder(),
+                                        ),
                                         onPressed: () async {
                                           final ImagePicker picker =
                                               ImagePicker();
@@ -129,6 +146,9 @@ class _InputdataViewState extends State<InputdataView> {
                                     ),
                                     Expanded(
                                       child: TextButton.icon(
+                                        style: TextButton.styleFrom(
+                                          shape: const RoundedRectangleBorder(),
+                                        ),
                                         onPressed: () async {
                                           final ImagePicker picker =
                                               ImagePicker();
@@ -300,26 +320,32 @@ class _InputdataViewState extends State<InputdataView> {
       floatingActionButton: FloatingActionButton(
         key: keyFloating,
         onPressed: () async {
-          if (controller.nameController.text.isNotEmpty &&
-              controller.weightController.text.isNotEmpty &&
+          if (controller.weightController.text.isNotEmpty &&
               controller.heightController.text.isNotEmpty &&
               controller.ageController.text.isNotEmpty &&
               controller.genderValue.value != null) {
-            await Storages.setProfile(
-              isMan: controller.genderValue.value!,
-              image: controller.imagePath.value.isNotEmpty
-                  ? controller.imagePath.value
-                  : null,
-              name: controller.nameController.text,
-              height: controller.heightController.text,
-              weight: controller.weightController.text,
-              age: controller.ageController.text,
-            );
-            Get.offNamed(Routes.PROFILE);
+            if (int.parse(controller.ageController.text) >= 18) {
+              await Storages.setProfile(
+                isMan: controller.genderValue.value!,
+                image: controller.imagePath.value.isNotEmpty
+                    ? controller.imagePath.value
+                    : null,
+                name: controller.nameController.text,
+                height: controller.heightController.text,
+                weight: controller.weightController.text,
+                age: controller.ageController.text,
+              );
+              Get.offNamed(Routes.PROFILE);
+            } else {
+              Publics.snackBarFail(
+                'REQUIREMENT!',
+                'Age must be above 18 years old.',
+              );
+            }
           } else {
             Publics.snackBarFail(
               'REQUIREMENT!',
-              'name, weight, height, and age are mandatory to fill in',
+              'weight, height, and age are mandatory to fill in',
             );
           }
         },
@@ -338,18 +364,16 @@ class _InputdataViewState extends State<InputdataView> {
   void createTutorial() {
     tutorialCoachMark = TutorialCoachMark(
       targets: _createTargets(),
-      colorShadow: Colors.red,
+      textStyleSkip: Font.regular(),
       textSkip: 'SKIP >>',
       paddingFocus: 10,
       opacityShadow: 0.5,
       imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
       onFinish: () async {
         await Storages.setTutorial(tutorial: TutorialModel(inputProfile: true));
-        Get.toNamed(Routes.INPUTDATA);
       },
       onSkip: () async {
         await Storages.setTutorial(tutorial: TutorialModel(inputProfile: true));
-        Get.toNamed(Routes.INPUTDATA);
       },
     );
   }
@@ -360,6 +384,7 @@ class _InputdataViewState extends State<InputdataView> {
       TargetFocus(
         identify: "Foto",
         keyTarget: keyFoto,
+        color: Warna.primary,
         alignSkip: Alignment.topRight,
         contents: [
           TargetContent(
@@ -378,107 +403,21 @@ class _InputdataViewState extends State<InputdataView> {
     );
     targets.add(
       TargetFocus(
-        identify: "Floating",
-        keyTarget: keyFloating,
-        alignSkip: Alignment.topRight,
-        contents: [
-          TargetContent(
-            align: ContentAlign.top,
-            builder: (context, controller) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Titulo lorem ipsum",
-                    style: Font.regular(
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-    targets.add(
-      TargetFocus(
-        shape: ShapeLightFocus.RRect,
-        identify: "Age",
-        keyTarget: keyAge,
-        alignSkip: Alignment.topRight,
-        contents: [
-          TargetContent(
-            align: ContentAlign.top,
-            builder: (context, controller) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Titulo lorem ipsum",
-                    style: Font.regular(
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-    targets.add(
-      TargetFocus(
-        shape: ShapeLightFocus.RRect,
-        radius: 0,
-        identify: "Height",
-        keyTarget: keyHeight,
-        alignSkip: Alignment.topRight,
-        contents: [
-          TargetContent(
-            align: ContentAlign.top,
-            builder: (context, controller) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Titulo lorem ipsum",
-                    style: Font.regular(
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-    targets.add(
-      TargetFocus(
         shape: ShapeLightFocus.RRect,
         radius: 0,
         identify: "Name",
         keyTarget: keyName,
+        color: Warna.primary,
         alignSkip: Alignment.topRight,
         contents: [
           TargetContent(
             align: ContentAlign.top,
             builder: (context, controller) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Titulo lorem ipsum",
-                    style: Font.regular(
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
+              return teksLanguage(
+                "Enter name:\nEntering a name is not mandatory, but it will be displayed on the profile page.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
               );
             },
           ),
@@ -491,6 +430,75 @@ class _InputdataViewState extends State<InputdataView> {
         radius: 0,
         identify: "Weight",
         keyTarget: keyWeight,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Enter weight:\nEntering weight is mandatory as it is used to calculate the user's BMI (Body Mass Index) and BMR (Basal Metabolic Rate).",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        radius: 0,
+        identify: "Height",
+        keyTarget: keyHeight,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Enter height:\nEntering height is mandatory as it is used to calculate the user's BMI (Body Mass Index) and BMR (Basal Metabolic Rate).",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        identify: "Age",
+        keyTarget: keyAge,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Enter age:\nEntering age is mandatory as it is used to calculate the user's BMR (Basal Metabolic Rate).",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        radius: 0,
+        identify: "Gender",
+        keyTarget: keyGender,
+        color: Warna.primary,
         alignSkip: Alignment.topRight,
         contents: [
           TargetContent(
@@ -500,7 +508,7 @@ class _InputdataViewState extends State<InputdataView> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
+                  teksLanguage(
                     "Titulo lorem ipsum",
                     style: Font.regular(
                       color: Colors.white,
@@ -515,10 +523,9 @@ class _InputdataViewState extends State<InputdataView> {
     );
     targets.add(
       TargetFocus(
-        shape: ShapeLightFocus.RRect,
-        radius: 0,
-        identify: "Gender",
-        keyTarget: keyGender,
+        identify: "Floating",
+        keyTarget: keyFloating,
+        color: Warna.primary,
         alignSkip: Alignment.topRight,
         contents: [
           TargetContent(
@@ -528,7 +535,7 @@ class _InputdataViewState extends State<InputdataView> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
+                  teksLanguage(
                     "Titulo lorem ipsum",
                     style: Font.regular(
                       color: Colors.white,
