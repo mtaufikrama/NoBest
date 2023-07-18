@@ -11,6 +11,7 @@ class UniverseController extends GetxController {
   final getGenerate = Storages.getGenerate.obs;
   final getBahasa = Storages.getBahasa.obs;
   final getSearch = Storages.getSearch.obs;
+  final getTutorial = Storages.getTutorial.obs;
 }
 
 class Publics {

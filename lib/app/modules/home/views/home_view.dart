@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
+import 'package:nobes/app/data/model/tutorial.dart';
 import 'package:nobes/app/data/model/usda_search.dart';
 import 'package:nobes/app/data/services/colors.dart';
 import 'package:nobes/app/data/services/font.dart';
@@ -15,13 +17,36 @@ import 'package:nobes/app/data/services/translate.dart';
 import 'package:nobes/app/data/widget/card_food.dart';
 import 'package:nobes/app/data/widget/refresh_page.dart';
 import 'package:nobes/app/routes/app_pages.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import '../controllers/home_controller.dart';
 
-class HomeView extends GetView<HomeController> {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
+
+  @override
+  HomeViewState createState() => HomeViewState();
+}
+
+class HomeViewState extends State<HomeView> {
+  late TutorialCoachMark tutorialCoachMark;
+
+  GlobalKey keyTranslate = GlobalKey();
+  GlobalKey keyProfile = GlobalKey();
+  GlobalKey keyFloating = GlobalKey();
+
+  final controller = Get.put(HomeController());
+
+  @override
+  void initState() {
+    if (controller.getTutorial.value.homepage != true) {
+      createTutorial();
+      Future.delayed(Duration.zero, showTutorial);
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double kkad = -100.0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -31,7 +56,7 @@ class HomeView extends GetView<HomeController> {
         automaticallyImplyLeading: false,
         centerTitle: true,
         leading: PopupMenuButton(
-          key: controller.keyButton,
+          key: keyTranslate,
           tooltip: stringTranslate('Translate'),
           icon: const ImageIcon(
             AssetImage(
@@ -487,9 +512,10 @@ class HomeView extends GetView<HomeController> {
                 )
               : Center(
                   child: ElevatedButton.icon(
+                    key: keyProfile,
                     label: teksLanguage(
                       'Input Data Profile',
-                      style: const TextStyle(
+                      style: Font.regular(
                         fontSize: 13.0,
                       ),
                     ),
@@ -502,36 +528,142 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
       floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
-        closeButtonStyle: const ExpandableFabCloseButtonStyle(
-          backgroundColor: Colors.red,
-          child: ImageIcon(AssetImage(IconApp.close)),
-        ),
-        overlayStyle: ExpandableFabOverlayStyle(blur: 5),
-        type: ExpandableFabType.left,
-        child: const ImageIcon(
-          AssetImage(IconApp.menu),
-        ),
+      floatingActionButton: Stack(
         children: [
-          FloatingActionButton.small(
-              tooltip: 'Generate Food',
-              heroTag: IconApp.setting,
-              child: const ImageIcon(AssetImage(IconApp.setting)),
-              onPressed: () => Get.toNamed(Routes.GENERATE)),
-          FloatingActionButton.small(
-            tooltip: 'List Food',
-            heroTag: IconApp.note,
-            child: const ImageIcon(AssetImage(IconApp.note)),
-            onPressed: () => Get.toNamed(Routes.LISTFOOD),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: SizedBox(
+              width: 100,
+              height: 100,
+              key: keyFloating,
+            ),
           ),
-          FloatingActionButton.small(
-            tooltip: 'Search Food',
-            heroTag: IconApp.search,
-            child: const ImageIcon(AssetImage(IconApp.search)),
-            onPressed: () => Get.toNamed(Routes.SEARCH),
+          ExpandableFab(
+            closeButtonStyle: const ExpandableFabCloseButtonStyle(
+              backgroundColor: Colors.red,
+              child: ImageIcon(AssetImage(IconApp.close)),
+            ),
+            overlayStyle: ExpandableFabOverlayStyle(blur: 5),
+            type: ExpandableFabType.left,
+            child: const ImageIcon(
+              AssetImage(IconApp.menu),
+            ),
+            children: [
+              FloatingActionButton.small(
+                  tooltip: 'Generate Food',
+                  heroTag: IconApp.setting,
+                  child: const ImageIcon(AssetImage(IconApp.setting)),
+                  onPressed: () => Get.toNamed(Routes.GENERATE)),
+              FloatingActionButton.small(
+                tooltip: 'List Food',
+                heroTag: IconApp.note,
+                child: const ImageIcon(AssetImage(IconApp.note)),
+                onPressed: () => Get.toNamed(Routes.LISTFOOD),
+              ),
+              FloatingActionButton.small(
+                tooltip: 'Search Food',
+                heroTag: IconApp.search,
+                child: const ImageIcon(AssetImage(IconApp.search)),
+                onPressed: () => Get.toNamed(Routes.SEARCH),
+              ),
+            ],
           ),
         ],
       ),
     );
+  }
+
+  void showTutorial() {
+    tutorialCoachMark.show(context: context);
+  }
+
+  void createTutorial() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: _createTargets(),
+      colorShadow: Colors.red,
+      textSkip: 'SKIP >>',
+      paddingFocus: 10,
+      opacityShadow: 0.5,
+      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+      onFinish: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(homepage: true));
+        Get.toNamed(Routes.INPUTDATA);
+      },
+      onSkip: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(homepage: true));
+        Get.toNamed(Routes.INPUTDATA);
+      },
+    );
+  }
+
+  List<TargetFocus> _createTargets() {
+    List<TargetFocus> targets = [];
+
+    targets.add(
+      TargetFocus(
+        identify: "Translate",
+        keyTarget: keyTranslate,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Translate button:\nUsed to select the language to be displayed on each slide. The default language is determined by your mobile phone.",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    targets.add(
+      TargetFocus(
+        identify: "floating",
+        keyTarget: keyFloating,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Menu button:\nUsed to select various available menus.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    targets.add(
+      TargetFocus(
+        identify: "Profile",
+        keyTarget: keyProfile,
+        alignSkip: Alignment.topRight,
+        enableOverlayTab: true,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Profile button:\nUsed to input data such as weight, height, age, etc., in order to determine the user's BMR (Basal Metabolic Rate) and suitable calorie deficit.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    return targets;
   }
 }

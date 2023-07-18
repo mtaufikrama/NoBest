@@ -5,6 +5,8 @@ import 'package:nobes/app/data/model/usda_search.dart';
 import 'package:nobes/app/data/services/kalkulasi.dart';
 import 'package:nobes/app/data/services/public.dart';
 
+import '../model/tutorial.dart';
+
 class Storages {
   static const profileName = 'profile';
   static const recentlyName = 'recently menu';
@@ -12,6 +14,7 @@ class Storages {
   static const dailyName = 'daily menu';
   static const searchName = 'search';
   static const bahasaName = 'bahasa';
+  static const tutorialName = 'tutorial';
   static const listStoragesName = [
     profileName,
     recentlyName,
@@ -19,6 +22,7 @@ class Storages {
     dailyName,
     searchName,
     bahasaName,
+    tutorialName,
   ];
   static final boxProfile = Hive.box(profileName);
   static final boxRecentlyMenu = Hive.box(recentlyName);
@@ -26,6 +30,7 @@ class Storages {
   static final boxDailyMenu = Hive.box(dailyName);
   static final boxSearch = Hive.box(searchName);
   static final boxBahasa = Hive.box(bahasaName);
+  static final boxTutorial = Hive.box(tutorialName);
 
   static Future<void> setRecently({required Foods foods}) async {
     await boxRecentlyMenu.add(foods.toJson());
@@ -37,6 +42,27 @@ class Storages {
     List recently = boxRecentlyMenu.values.toList();
     return recently;
   }
+
+  static Future<void> setTutorial({required TutorialModel tutorial}) async {
+    TutorialModel tutor = Storages.getTutorial;
+    await boxTutorial.clear();
+    await boxTutorial.put(
+        'homepage', tutorial.homepage ?? tutor.homepage ?? false);
+    await boxTutorial.put(
+        'profile', tutorial.profile ?? tutor.profile ?? false);
+    await boxTutorial.put(
+        'list_food', tutorial.listFood ?? tutor.listFood ?? false);
+    await boxTutorial.put(
+        'generate_food', tutorial.generateFood ?? tutor.generateFood ?? false);
+    await boxTutorial.put(
+        'input_profile', tutorial.inputProfile ?? tutor.inputProfile ?? false);
+    Publics.controller.getTutorial.value = Storages.getTutorial;
+    print(Publics.controller.getTutorial.value.toJson());
+    return;
+  }
+
+  static TutorialModel get getTutorial =>
+      TutorialModel.fromJson(boxTutorial.isNotEmpty ? boxTutorial.toMap() : {});
 
   // static Future<void> setDaily(
   //     {required List<Foods> foods, required Profile profile}) async {
@@ -98,7 +124,6 @@ class Storages {
     await boxProfile.put('weight', weight);
     await boxProfile.put('age', age);
     await boxProfile.put('IMT', imt);
-    await boxProfile.put('PAL', pal ?? profile.pal ?? '1.2');
     double nilaiKalori = Kalkulator.nilaiKiloPembakaran(
       kategoriIMT: Kalkulator.kategoriIMT(
         imt: double.parse(imt),
@@ -126,14 +151,7 @@ class Storages {
       height: double.parse(height),
       age: double.parse(age),
     );
-    final String kkt = Kalkulator.kkt(
-      bmr: bmr,
-      pal: pal != null
-          ? double.parse(pal)
-          : profile.pal != null
-              ? double.parse(profile.pal!)
-              : null,
-    ).toStringAsFixed(2);
+    final String kkt = bmr.toStringAsFixed(2);
     await boxProfile.put('KKT', kkt);
     Publics.controller.getProfile.value = Storages.getProfile;
     return;

@@ -8,10 +8,10 @@ import 'package:nobes/app/data/services/public.dart';
 import 'package:nobes/app/data/services/translate.dart';
 import 'package:nobes/app/data/widget/refresh_page.dart';
 import 'package:nobes/app/routes/app_pages.dart';
-import '../controllers/search_controller.dart';
+import '../controllers/searchs_controller.dart';
 
-class SearchView extends GetView<SearchController> {
-  const SearchView({Key? key}) : super(key: key);
+class SearchsView extends GetView<SearchsController> {
+  const SearchsView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

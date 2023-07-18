@@ -95,6 +95,21 @@ class Kalkulator {
           ? 655.1 + (9.563 * weight) + (1.850 * height) + (4.676 * age)
           : 66.5 + (13.75 * weight) + (5.003 * height) + (6.775 * age);
 
+  // umur
+  static int umur(String dateString) {
+    final today = DateTime.now();
+    final birthDate = DateTime.parse(dateString);
+
+    int age = today.year - birthDate.year;
+    int monthDiff = today.month - birthDate.month;
+
+    if (monthDiff < 0 || (monthDiff == 0 && today.day < birthDate.day)) {
+      age--;
+    }
+
+    return age;
+  }
+
   //porsi makanan
   static double porsi({required double size, required double value}) =>
       (size / 100) * value;

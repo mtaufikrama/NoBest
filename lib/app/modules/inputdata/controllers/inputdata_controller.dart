@@ -17,19 +17,21 @@ class InputdataController extends GetxController {
       TextEditingController(text: Publics.controller.getProfile.value.age);
   Rx<Profile> getProfile = Publics.controller.getProfile;
   final genderValue = Publics.controller.getProfile.value.isMan.obs;
+  final getTutorial = Publics.controller.getTutorial;
   final imagePath = ''.obs;
+  final calender = DateTime.now().obs;
 
   final gender = [
     GenderModel(true, 'Male'),
     GenderModel(false, 'Female'),
   ];
 
-  @override
-  void onClose() {
-    nameController.clear();
-    weightController.clear();
-    heightController.clear();
-    ageController.clear();
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   nameController.clear();
+  //   weightController.clear();
+  //   heightController.clear();
+  //   ageController.clear();
+  //   super.onClose();
+  // }
 }

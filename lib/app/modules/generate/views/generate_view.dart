@@ -161,99 +161,99 @@ class GenerateView extends GetView<GenerateController> {
                     ),
                   ),
                 ),
-                DropdownButtonFormField2(
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  isExpanded: true,
-                  hint: controller.getProfile.value.pal == null
-                      ? teksLanguage(
-                          'Select your Physical Activity Level',
-                          style: Font.regular(fontSize: 14),
-                        )
-                      : ListTile(
-                          title: teksLanguage(
-                            controller.kategoriPAL.value.kategori,
-                            style: Font.regular(
-                              fontSize: 14.0,
-                            ),
-                          ),
-                          subtitle: teksLanguage(
-                            controller.kategoriPAL.value.harian,
-                            style: Font.regular(
-                              fontSize: 13.0,
-                              color: Colors.grey,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          trailing: teksLanguage(
-                            controller.kategoriPAL.value.nilai.toString(),
-                            style: Font.regular(),
-                          ),
-                        ),
-                  items: controller.pal
-                      .map(
-                        (item) => DropdownMenuItem(
-                          value: item,
-                          child: ListTile(
-                            title: teksLanguage(
-                              item.kategori,
-                              style: Font.regular(
-                                fontSize: 14.0,
-                              ),
-                            ),
-                            subtitle: teksLanguage(
-                              item.harian,
-                              style: Font.regular(
-                                fontSize: 13.0,
-                                color: Colors.grey,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: teksLanguage(
-                              item.nilai.toString(),
-                              style: Font.regular(),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select Physical Activity Level';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    controller.selectedValue.value = value!;
-                  },
-                  buttonStyleData: const ButtonStyleData(
-                    height: 60,
-                    padding: EdgeInsets.only(left: 0, right: 10),
-                  ),
-                  iconStyleData: const IconStyleData(
-                    icon: ImageIcon(AssetImage(IconApp.arrowDown)),
-                    iconSize: 20,
-                    openMenuIcon: ImageIcon(
-                      AssetImage(IconApp.arrowUp),
-                      color: Warna.primary,
-                    ),
-                  ),
-                  dropdownStyleData: DropdownStyleData(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
+                // DropdownButtonFormField2(
+                //   decoration: InputDecoration(
+                //     isDense: true,
+                //     contentPadding: EdgeInsets.zero,
+                //     border: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(25),
+                //     ),
+                //   ),
+                //   isExpanded: true,
+                //   hint: controller.getProfile.value.pal == null
+                //       ? teksLanguage(
+                //           'Select your Physical Activity Level',
+                //           style: Font.regular(fontSize: 14),
+                //         )
+                //       : ListTile(
+                //           title: teksLanguage(
+                //             controller.kategoriPAL.value.kategori,
+                //             style: Font.regular(
+                //               fontSize: 14.0,
+                //             ),
+                //           ),
+                //           subtitle: teksLanguage(
+                //             controller.kategoriPAL.value.harian,
+                //             style: Font.regular(
+                //               fontSize: 13.0,
+                //               color: Colors.grey,
+                //             ),
+                //             maxLines: 1,
+                //             overflow: TextOverflow.ellipsis,
+                //           ),
+                //           trailing: teksLanguage(
+                //             controller.kategoriPAL.value.nilai.toString(),
+                //             style: Font.regular(),
+                //           ),
+                //         ),
+                //   items: controller.pal
+                //       .map(
+                //         (item) => DropdownMenuItem(
+                //           value: item,
+                //           child: ListTile(
+                //             title: teksLanguage(
+                //               item.kategori,
+                //               style: Font.regular(
+                //                 fontSize: 14.0,
+                //               ),
+                //             ),
+                //             subtitle: teksLanguage(
+                //               item.harian,
+                //               style: Font.regular(
+                //                 fontSize: 13.0,
+                //                 color: Colors.grey,
+                //               ),
+                //               maxLines: 1,
+                //               overflow: TextOverflow.ellipsis,
+                //             ),
+                //             trailing: teksLanguage(
+                //               item.nilai.toString(),
+                //               style: Font.regular(),
+                //             ),
+                //           ),
+                //         ),
+                //       )
+                //       .toList(),
+                //   validator: (value) {
+                //     if (value == null) {
+                //       return 'Please select Physical Activity Level';
+                //     }
+                //     return null;
+                //   },
+                //   onChanged: (value) {
+                //     controller.selectedValue.value = value!;
+                //   },
+                //   buttonStyleData: const ButtonStyleData(
+                //     height: 60,
+                //     padding: EdgeInsets.only(left: 0, right: 10),
+                //   ),
+                //   iconStyleData: const IconStyleData(
+                //     icon: ImageIcon(AssetImage(IconApp.arrowDown)),
+                //     iconSize: 20,
+                //     openMenuIcon: ImageIcon(
+                //       AssetImage(IconApp.arrowUp),
+                //       color: Warna.primary,
+                //     ),
+                //   ),
+                //   dropdownStyleData: DropdownStyleData(
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(15),
+                //     ),
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 15,
+                // ),
                 DropdownButtonFormField2(
                   decoration: InputDecoration(
                     isDense: true,

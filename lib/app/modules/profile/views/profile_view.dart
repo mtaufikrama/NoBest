@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -10,11 +11,35 @@ import 'package:nobes/app/data/services/public.dart';
 import 'package:nobes/app/data/services/translate.dart';
 import 'package:nobes/app/data/widget/refresh_page.dart';
 import 'package:nobes/app/routes/app_pages.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../controllers/profile_controller.dart';
 
-class ProfileView extends GetView<ProfileController> {
-  const ProfileView({Key? key}) : super(key: key);
+class ProfileView extends StatefulWidget {
+  const ProfileView({super.key});
+
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  late TutorialCoachMark tutorialCoachMark;
+
+  GlobalKey keyTranslate = GlobalKey();
+  GlobalKey keyProfile = GlobalKey();
+  GlobalKey keyFloating = GlobalKey();
+
+  final controller = Get.put(ProfileController());
+
+  @override
+  void initState() {
+    if (controller.getTutorial.value.profile != true) {
+      createTutorial();
+      Future.delayed(Duration.zero, showTutorial);
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,10 +120,10 @@ class ProfileView extends GetView<ProfileController> {
                       'Gender',
                       style: Font.regular(fontSize: 18),
                     ),
-                    Text(
-                      'PAL',
-                      style: Font.regular(fontSize: 18),
-                    ),
+                    // Text(
+                    //   'PAL',
+                    //   style: Font.regular(fontSize: 18),
+                    // ),
                     Text(
                       controller.getBahasa.value == 'en' ? 'BMI' : 'IMT',
                       style: Font.regular(fontSize: 18),
@@ -151,12 +176,12 @@ class ProfileView extends GetView<ProfileController> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        teksLanguage(
-                          ": ${controller.getProfile.value.pal} ➜ ${Kalkulator.kategoriPAL()}",
-                          style: Font.regular(fontSize: 18),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        // teksLanguage(
+                        //   ": ${controller.getProfile.value.pal} ➜ ${Kalkulator.kategoriPAL()}",
+                        //   style: Font.regular(fontSize: 18),
+                        //   maxLines: 1,
+                        //   overflow: TextOverflow.ellipsis,
+                        // ),
                         teksLanguage(
                           ": ${Kalkulator.kategoriIMT()}",
                           style: Font.regular(fontSize: 18),
@@ -185,5 +210,123 @@ class ProfileView extends GetView<ProfileController> {
         ),
       ),
     );
+  }
+
+  void showTutorial() {
+    tutorialCoachMark.show(context: context);
+  }
+
+  void createTutorial() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: _createTargets(),
+      textSkip: 'SKIP >>',
+      paddingFocus: 10,
+      opacityShadow: 0.5,
+      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+      onFinish: () {
+        print("finish");
+      },
+      onClickTarget: (target) {
+        print('onClickTarget: $target');
+      },
+      onClickTargetWithTapPosition: (target, tapDetails) {
+        print("target: $target");
+        print(
+            "clicked at position local: ${tapDetails.localPosition} - global: ${tapDetails.globalPosition}");
+      },
+      onClickOverlay: (target) {
+        print('onClickOverlay: $target');
+      },
+      onSkip: () {
+        print("skip");
+      },
+    );
+  }
+
+  List<TargetFocus> _createTargets() {
+    List<TargetFocus> targets = [];
+    targets.add(
+      TargetFocus(
+        identify: "Profile",
+        keyTarget: keyProfile,
+        alignSkip: Alignment.topRight,
+        enableOverlayTab: true,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "",
+                    style: Font.regular(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    targets.add(
+      TargetFocus(
+        identify: "keyBottomNavigation2",
+        keyTarget: keyFloating,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Titulo lorem ipsum",
+                    style: Font.regular(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    targets.add(
+      TargetFocus(
+        identify: "keyBottomNavigation3",
+        keyTarget: keyTranslate,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Titulo lorem ipsum",
+                    style: Font.regular(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    return targets;
   }
 }

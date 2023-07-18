@@ -16,8 +16,8 @@ import '../modules/listfood/bindings/listfood_binding.dart';
 import '../modules/listfood/views/listfood_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
-import '../modules/search/bindings/search_binding.dart';
-import '../modules/search/views/search_view.dart';
+import '../modules/searchs/bindings/searchs_binding.dart';
+import '../modules/searchs/views/searchs_view.dart';
 
 // ignore_for_file: constant_identifier_names
 
@@ -56,8 +56,8 @@ class AppPages {
     GetPage(
       transition: Transition.downToUp,
       name: _Paths.SEARCH,
-      page: () => const SearchView(),
-      binding: SearchBinding(),
+      page: () => const SearchsView(),
+      binding: SearchsBinding(),
     ),
     GetPage(
       transition: Transition.rightToLeftWithFade,

@@ -9,7 +9,7 @@ import 'package:nobes/app/data/services/translate.dart';
 import 'package:nobes/app/data/widget/card_food.dart';
 import 'package:search_page/search_page.dart';
 
-class SearchController extends GetxController {
+class SearchsController extends GetxController {
   //TODO: Implement SearchController
   final searchController = TextEditingController();
   final getSearch = Publics.controller.getSearch;
