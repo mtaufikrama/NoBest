@@ -19,4 +19,8 @@ class IconApp {
   static const gallery = '$_icon/gallery.png';
   static const translate = '$_icon/translate.png';
   static const recommend = '$_icon/recommend.png';
+  static const date = '$_icon/date.png';
+  static const weight = '$_icon/weight.png';
+  static const man = '$_icon/man.png';
+  static const woman = '$_icon/woman.png';
 }

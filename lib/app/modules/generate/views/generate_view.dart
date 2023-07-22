@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +15,37 @@ import 'package:nobes/app/data/services/translate.dart';
 import 'package:nobes/app/data/widget/card_food.dart';
 import 'package:nobes/app/data/widget/refresh_page.dart';
 import 'package:nobes/app/routes/app_pages.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
+import '../../../data/model/tutorial.dart';
 import '../controllers/generate_controller.dart';
 
-class GenerateView extends GetView<GenerateController> {
-  const GenerateView({Key? key}) : super(key: key);
+class GenerateView extends StatefulWidget {
+  const GenerateView({super.key});
+
+  @override
+  State<GenerateView> createState() => _GenerateViewState();
+}
+
+class _GenerateViewState extends State<GenerateView> {
+  late TutorialCoachMark tutorialCoachMark;
+
+  GlobalKey keyProfile = GlobalKey();
+  GlobalKey keyDeficit = GlobalKey();
+  GlobalKey keyListFood = GlobalKey();
+  GlobalKey keyFloating = GlobalKey();
+
+  final controller = Get.put(GenerateController());
+
+  @override
+  void initState() {
+    if (controller.getTutorial.value.generateFood != true) {
+      createTutorial();
+      Future.delayed(Duration.zero, showTutorial);
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +68,7 @@ class GenerateView extends GetView<GenerateController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Card(
+                    key: keyProfile,
                     color: Warna.baseBlack,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -255,6 +284,7 @@ class GenerateView extends GetView<GenerateController> {
                 //   height: 15,
                 // ),
                 DropdownButtonFormField2(
+                  key: keyDeficit,
                   decoration: InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
@@ -287,12 +317,12 @@ class GenerateView extends GetView<GenerateController> {
                             double.parse(controller
                                         .getProfile.value.kiloPembakaran!) <
                                     0.0
-                                ? 'Weight loss of 1 kg in 4 weeks'
+                                ? 'Weight gain of 1 kg in 4 weeks'
                                 : double.parse(controller.getProfile.value
                                             .kiloPembakaran!) ==
                                         0.0
                                     ? 'No change in 4 weeks'
-                                    : 'Weight gain of ${double.parse(controller.getProfile.value.kiloPembakaran!)} kg in 4 weeks',
+                                    : 'Weight loss of ${double.parse(controller.getProfile.value.kiloPembakaran!)} kg in 4 weeks',
                             style: Font.regular(
                               fontSize: 13.0,
                               color: Colors.grey,
@@ -318,10 +348,10 @@ class GenerateView extends GetView<GenerateController> {
                             ),
                             subtitle: teksLanguage(
                               item < 0.0
-                                  ? 'Weight loss of 1 kg in 4 weeks'
+                                  ? 'Weight gain of 1 kg in 4 weeks'
                                   : item == 0.0
                                       ? 'No change in 4 weeks'
-                                      : 'Weight gain of $item kg in 4 weeks',
+                                      : 'Weight loss of $item kg in 4 weeks',
                               style: Font.regular(
                                 fontSize: 13.0,
                                 color: Colors.grey,
@@ -370,6 +400,7 @@ class GenerateView extends GetView<GenerateController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Card(
+                    key: keyListFood,
                     color: Warna.baseBlack,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -446,6 +477,7 @@ class GenerateView extends GetView<GenerateController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        key: keyFloating,
         child: const ImageIcon(AssetImage(IconApp.send)),
         onPressed: () async {
           if (controller.getProfile.value.height != null &&
@@ -474,5 +506,121 @@ class GenerateView extends GetView<GenerateController> {
         },
       ),
     );
+  }
+
+  void showTutorial() {
+    tutorialCoachMark.show(context: context);
+  }
+
+  void createTutorial() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: _createTargets(),
+      textStyleSkip: Font.regular(),
+      textSkip: 'SKIP >>',
+      paddingFocus: 10,
+      opacityShadow: 0.5,
+      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+      onFinish: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(generateFood: true));
+      },
+      onSkip: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(generateFood: true));
+      },
+    );
+  }
+
+  List<TargetFocus> _createTargets() {
+    List<TargetFocus> targets = [];
+    targets.add(
+      TargetFocus(
+        identify: "Profile",
+        shape: ShapeLightFocus.RRect,
+        keyTarget: keyProfile,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Titulo lorem ipsum",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        radius: 0,
+        identify: "Deficit",
+        keyTarget: keyDeficit,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Enter name:\nEntering a name is not mandatory, but it will be displayed on the profile page.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        radius: 0,
+        identify: "List Food",
+        keyTarget: keyListFood,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Enter weight:\nEntering weight is mandatory as it is used to calculate the user's BMI (Body Mass Index) and BMR (Basal Metabolic Rate).",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        radius: 0,
+        identify: "Floating",
+        keyTarget: keyFloating,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Enter height:\nEntering height is mandatory as it is used to calculate the user's BMI (Body Mass Index) and BMR (Basal Metabolic Rate).",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    return targets;
   }
 }

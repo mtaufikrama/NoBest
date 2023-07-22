@@ -2,8 +2,10 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:d_chart/d_chart.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:nobes/app/data/model/tutorial.dart';
 import 'package:nobes/app/data/model/usda_search.dart';
@@ -47,10 +49,12 @@ class HomeViewState extends State<HomeView> {
       createTutorial();
       Future.delayed(Duration.zero, showTutorial);
     } else {
-      if (controller.getProfile.value.age != null ||
-          controller.getProfile.value.age!.isNotEmpty) {
-        createTutorial1();
-        Future.delayed(Duration.zero, showTutorial1);
+      if (controller.getTutorial.value.finish != true) {
+        if (controller.getProfile.value.age != null ||
+            controller.getProfile.value.age!.isNotEmpty) {
+          createTutorial1();
+          Future.delayed(Duration.zero, showTutorial1);
+        }
       }
     }
     super.initState();
@@ -121,111 +125,160 @@ class HomeViewState extends State<HomeView> {
                         Expanded(
                           child: AspectRatio(
                             aspectRatio: 1,
-                            child: Card(
-                              key: keyBMI,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                side: const BorderSide(
-                                  width: 1.5,
-                                  color: Warna.baseWhite,
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.defaultDialog(
+                                    title:
+                                        'INFO ${controller.getBahasa.value == 'id' ? 'IMT' : 'BMI'}',
+                                    titleStyle: Font.regular(),
+                                    content: Column(
+                                      children: [
+                                        Text(
+                                          controller.getBahasa.value == 'id'
+                                              ? 'Indeks Massa Tubuh\n'
+                                              : 'Body Mass Index\n',
+                                          style: Font.regular(),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        teksLanguage(
+                                          "calculation is based on the World Health Organization (WHO) standards, and it is determined by one's height, weight, and gender.",
+                                          style: Font.regular(),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const Text(""),
+                                        teksLanguage(
+                                          "The formula for calculating BMI is as follows:",
+                                          style: Font.regular(),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        TextButton(
+                                          onPressed: () {},
+                                          child: teksLanguage(
+                                            "weight(kg) / height(cm)²",
+                                            style: Font.regular(),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () => Get.back(),
+                                        child: const ImageIcon(
+                                          AssetImage(IconApp.close),
+                                          size: 20.0,
+                                        ),
+                                      )
+                                    ]);
+                              },
+                              child: Card(
+                                key: keyBMI,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: const BorderSide(
+                                    width: 1.5,
+                                    color: Warna.baseWhite,
+                                  ),
                                 ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(
-                                      controller.getBahasa.value == 'id'
-                                          ? 'IMT'
-                                          : 'BMI',
-                                      style: Font.regular(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: Text(
+                                        controller.getBahasa.value == 'id'
+                                            ? 'IMT'
+                                            : 'BMI',
+                                        style: Font.regular(
+                                          fontSize: 20.0,
+                                          color: Warna.baseWhite,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    const Divider(
+                                      height: 5,
+                                    ),
+                                    Expanded(
+                                      child: DChartGauge(
+                                        data: const [
+                                          {
+                                            'domain': KategoriIMT.kurus,
+                                            'measure': 1
+                                          },
+                                          {
+                                            'domain': KategoriIMT.normal,
+                                            'measure': 1
+                                          },
+                                          {
+                                            'domain': KategoriIMT.kegemukkan,
+                                            'measure': 1
+                                          },
+                                          {
+                                            'domain': KategoriIMT.obesitas,
+                                            'measure': 1
+                                          },
+                                        ],
+                                        fillColor: (pieData, index) {
+                                          String imt = Kalkulator.kategoriIMT(
+                                            isMan: controller
+                                                .getProfile.value.isMan!,
+                                            imt: double.parse(controller
+                                                .getProfile.value.imt!),
+                                          );
+                                          if (pieData['domain'] == imt) {
+                                            switch (
+                                                (pieData['domain'] as String)) {
+                                              case KategoriIMT.kurus:
+                                                return Colors.blue;
+                                              case KategoriIMT.normal:
+                                                return Colors.green;
+                                              case KategoriIMT.kegemukkan:
+                                                return Colors.orange;
+                                              default:
+                                                return Colors.red;
+                                            }
+                                          } else {
+                                            return Colors.grey;
+                                          }
+                                        },
+                                        animationDuration:
+                                            const Duration(milliseconds: 500),
+                                        showLabelLine: false,
+                                        pieLabel: (pieData, index) {
+                                          return "";
+                                        },
+                                        strokeWidth: 0,
+                                        donutWidth: 10,
+                                      ),
+                                    ),
+                                    Text(
+                                      controller.getProfile.value.imt
+                                          .toString()
+                                          .toUpperCase(),
+                                      style: Font.number(
                                         fontSize: 20.0,
                                         color: Warna.baseWhite,
-                                        fontWeight: FontWeight.w500,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                  const Divider(
-                                    height: 5,
-                                  ),
-                                  Expanded(
-                                    child: DChartGauge(
-                                      data: const [
-                                        {
-                                          'domain': KategoriIMT.kurus,
-                                          'measure': 1
-                                        },
-                                        {
-                                          'domain': KategoriIMT.normal,
-                                          'measure': 1
-                                        },
-                                        {
-                                          'domain': KategoriIMT.kegemukkan,
-                                          'measure': 1
-                                        },
-                                        {
-                                          'domain': KategoriIMT.obesitas,
-                                          'measure': 1
-                                        },
-                                      ],
-                                      fillColor: (pieData, index) {
-                                        String imt = Kalkulator.kategoriIMT(
-                                          isMan: controller
-                                              .getProfile.value.isMan!,
-                                          imt: double.parse(
-                                              controller.getProfile.value.imt!),
-                                        );
-                                        if (pieData['domain'] == imt) {
-                                          switch (
-                                              (pieData['domain'] as String)) {
-                                            case KategoriIMT.kurus:
-                                              return Colors.blue;
-                                            case KategoriIMT.normal:
-                                              return Colors.green;
-                                            case KategoriIMT.kegemukkan:
-                                              return Colors.orange;
-                                            default:
-                                              return Colors.red;
-                                          }
-                                        } else {
-                                          return Colors.grey;
-                                        }
-                                      },
-                                      animationDuration:
-                                          const Duration(milliseconds: 500),
-                                      showLabelLine: false,
-                                      pieLabel: (pieData, index) {
-                                        return "";
-                                      },
-                                      strokeWidth: 0,
-                                      donutWidth: 10,
+                                    teksLanguage(
+                                      Kalkulator.kategoriIMT(
+                                        isMan:
+                                            controller.getProfile.value.isMan!,
+                                        imt: double.parse(
+                                            controller.getProfile.value.imt!),
+                                      ).toUpperCase(),
+                                      style: Font.regular(
+                                        fontSize: 15.0,
+                                        color: Warna.baseWhite,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                  Text(
-                                    controller.getProfile.value.imt
-                                        .toString()
-                                        .toUpperCase(),
-                                    style: Font.number(
-                                      fontSize: 20.0,
-                                      color: Warna.baseWhite,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  teksLanguage(
-                                    Kalkulator.kategoriIMT(
-                                      isMan: controller.getProfile.value.isMan!,
-                                      imt: double.parse(
-                                          controller.getProfile.value.imt!),
-                                    ).toUpperCase(),
-                                    style: Font.regular(
-                                      fontSize: 15.0,
-                                      color: Warna.baseWhite,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -233,66 +286,334 @@ class HomeViewState extends State<HomeView> {
                         Expanded(
                           child: AspectRatio(
                             aspectRatio: 1,
-                            child: Card(
-                              key: keyBMR,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                side: const BorderSide(
-                                  width: 1.5,
-                                  color: Warna.baseWhite,
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.defaultDialog(
+                                    title:
+                                        'INFO ${controller.getBahasa.value == 'id' ? 'AMB' : 'BMR'}',
+                                    titleStyle: Font.regular(),
+                                    content: Column(
+                                      children: [
+                                        Text(
+                                          controller.getBahasa.value == 'id'
+                                              ? 'Angka Metabolisme Badan\n'
+                                              : 'Body Metabolic Rate\n',
+                                          style: Font.regular(),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              teksLanguage(
+                                                "calculation is based on the World Health Organization (WHO) standards, and it is determined by one's height, weight, and gender.",
+                                                style: Font.regular(),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              const Text(""),
+                                              DropdownButtonFormField2(
+                                                decoration: InputDecoration(
+                                                  isDense: true,
+                                                  contentPadding:
+                                                      EdgeInsets.zero,
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            25),
+                                                  ),
+                                                ),
+                                                isExpanded: true,
+                                                hint: controller
+                                                            .getProfile
+                                                            .value
+                                                            .kaloriPembakaran ==
+                                                        null
+                                                    ? teksLanguage(
+                                                        'Energy Deficit',
+                                                        style: Font.regular(
+                                                            fontSize: 14),
+                                                      )
+                                                    : ListTile(
+                                                        title: teksLanguage(
+                                                          double.parse(controller
+                                                                      .getProfile
+                                                                      .value
+                                                                      .kiloPembakaran!) <
+                                                                  0.0
+                                                              ? 'Add ${Kalkulator.kaloriPembakaran(kilo: double.parse(controller.getProfile.value.kiloPembakaran!)).abs()} kcal/day'
+                                                              : double.parse(controller
+                                                                          .getProfile
+                                                                          .value
+                                                                          .kiloPembakaran!) ==
+                                                                      0.0
+                                                                  ? 'No change'
+                                                                  : 'Subtract ${Kalkulator.kaloriPembakaran(kilo: double.parse(controller.getProfile.value.kiloPembakaran!)).abs()} kcal/day',
+                                                          style: Font.regular(
+                                                            fontSize: 14.0,
+                                                          ),
+                                                        ),
+                                                        subtitle: teksLanguage(
+                                                          double.parse(controller
+                                                                      .getProfile
+                                                                      .value
+                                                                      .kiloPembakaran!) <
+                                                                  0.0
+                                                              ? 'Weight gain of 1 kg in 4 weeks'
+                                                              : double.parse(controller
+                                                                          .getProfile
+                                                                          .value
+                                                                          .kiloPembakaran!) ==
+                                                                      0.0
+                                                                  ? 'No change in 4 weeks'
+                                                                  : 'Weight loss of ${double.parse(controller.getProfile.value.kiloPembakaran!)} kg in 4 weeks',
+                                                          style: Font.regular(
+                                                            fontSize: 13.0,
+                                                            color: Colors.grey,
+                                                          ),
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                      ),
+                                                items: controller.defisitKalori
+                                                    .map(
+                                                      (item) =>
+                                                          DropdownMenuItem(
+                                                        value: item,
+                                                        child: ListTile(
+                                                          title: teksLanguage(
+                                                            item < 0.0
+                                                                ? 'Add ${Kalkulator.kaloriPembakaran(kilo: item).abs()} kcal/day'
+                                                                : item == 0.0
+                                                                    ? 'No change'
+                                                                    : 'Subtract ${Kalkulator.kaloriPembakaran(kilo: item).abs()} kcal/day',
+                                                            style: Font.regular(
+                                                              fontSize: 14.0,
+                                                            ),
+                                                          ),
+                                                          subtitle:
+                                                              teksLanguage(
+                                                            item < 0.0
+                                                                ? 'Weight gain of 1 kg in 4 weeks'
+                                                                : item == 0.0
+                                                                    ? 'No change in 4 weeks'
+                                                                    : 'Weight loss of $item kg in 4 weeks',
+                                                            style: Font.regular(
+                                                              fontSize: 13.0,
+                                                              color:
+                                                                  Colors.grey,
+                                                            ),
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                          trailing: item ==
+                                                                  Kalkulator
+                                                                      .nilaiKiloPembakaran()
+                                                              ? const ImageIcon(
+                                                                  AssetImage(
+                                                                    IconApp
+                                                                        .recommend,
+                                                                  ),
+                                                                )
+                                                              : null,
+                                                        ),
+                                                      ),
+                                                    )
+                                                    .toList(),
+                                                onChanged: (value) async {
+                                                  await Storages.setProfile(
+                                                    height: controller
+                                                            .getProfile
+                                                            .value
+                                                            .height ??
+                                                        '',
+                                                    weight: controller
+                                                            .getProfile
+                                                            .value
+                                                            .weight ??
+                                                        '',
+                                                    age: controller.getProfile
+                                                            .value.age ??
+                                                        '',
+                                                    isMan: controller.getProfile
+                                                            .value.isMan ??
+                                                        false,
+                                                    kiloPembakaran:
+                                                        value.toString(),
+                                                  );
+                                                },
+                                                buttonStyleData:
+                                                    const ButtonStyleData(
+                                                  height: 60,
+                                                  padding: EdgeInsets.only(
+                                                      left: 0, right: 10),
+                                                ),
+                                                iconStyleData:
+                                                    const IconStyleData(
+                                                  icon: ImageIcon(AssetImage(
+                                                      IconApp.arrowDown)),
+                                                  iconSize: 20,
+                                                  openMenuIcon: ImageIcon(
+                                                    AssetImage(IconApp.arrowUp),
+                                                    color: Warna.primary,
+                                                  ),
+                                                ),
+                                                dropdownStyleData:
+                                                    DropdownStyleData(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                ),
+                                              ),
+                                              const Text(""),
+                                              TextButton(
+                                                onPressed: () {},
+                                                child: teksLanguage(
+                                                  "${controller.getBahasa.value == 'id' ? 'AMB' : 'BMR'} = ${controller.getProfile.value.isMan == true ? '655.1 + (9.563 * weight) + (1.850 * height) + (4.676 * age)' : '66.5 + (13.75 * weight) + (5.003 * height) + (6.775 * age)'}",
+                                                  style: Font.regular(),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                              Obx(
+                                                () {
+                                                  return Column(
+                                                    children: [
+                                                      Text(
+                                                        "${controller.getBahasa.value == 'id' ? 'AMB' : 'BMR'} = ${controller.getProfile.value.kkt} kcal",
+                                                        style: Font.regular(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                      Text(
+                                                        "${controller.getBahasa.value == 'id' ? 'Defisit Kalori' : 'Deficit Calorie'} = ${controller.getProfile.value.kaloriPembakaran} kcal",
+                                                        style: Font.regular(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                      const Text(""),
+                                                      TextButton(
+                                                        onPressed: () {},
+                                                        child: Text(
+                                                          controller.getBahasa
+                                                                      .value !=
+                                                                  'id'
+                                                              ? 'Calories In = BMR - Calorie Deficit'
+                                                              : 'Kalori Masuk = AMB - Defisit Kalori',
+                                                          style: Font.regular(),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${controller.getBahasa.value != 'id' ? 'Calorie In' : 'Kalori Masuk'} = ${double.parse(controller.getProfile.value.kkt ?? '0') - double.parse(controller.getProfile.value.kaloriPembakaran ?? '0')} kcal",
+                                                        style: Font.regular(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                      const Text(""),
+                                                      teksLanguage(
+                                                        double.parse(controller
+                                                                    .getProfile
+                                                                    .value
+                                                                    .kiloPembakaran!) <
+                                                                0.0
+                                                            ? 'Weight gain of 1 kg in 4 weeks'
+                                                            : double.parse(controller
+                                                                        .getProfile
+                                                                        .value
+                                                                        .kiloPembakaran!) ==
+                                                                    0.0
+                                                                ? 'No change in 4 weeks'
+                                                                : 'Weight loss of ${double.parse(controller.getProfile.value.kiloPembakaran!)} kg in 4 weeks',
+                                                        style: Font.regular(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () => Get.back(),
+                                        child: const ImageIcon(
+                                          AssetImage(IconApp.close),
+                                          size: 20.0,
+                                        ),
+                                      )
+                                    ]);
+                              },
+                              child: Card(
+                                key: keyBMR,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: const BorderSide(
+                                    width: 1.5,
+                                    color: Warna.baseWhite,
+                                  ),
                                 ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(
-                                      controller.getBahasa.value == 'id'
-                                          ? 'AMB'
-                                          : 'BMR',
-                                      style: Font.regular(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: Text(
+                                        controller.getBahasa.value == 'id'
+                                            ? 'AMB'
+                                            : 'BMR',
+                                        style: Font.regular(
+                                          fontSize: 20.0,
+                                          color: Warna.baseWhite,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    const Divider(height: 5),
+                                    Expanded(
+                                      child: DChartSingleBar(
+                                        backgroundColor: controller.kalori > 0.0
+                                            ? Colors.red
+                                            : controller.kalori == 0.0
+                                                ? Colors.grey
+                                                : Colors.green,
+                                        forgroundColor: Colors.blue,
+                                        value: controller.maxNValue['value']!,
+                                        max: controller.maxNValue['max']!,
+                                      ),
+                                    ),
+                                    Text(
+                                      controller.kkt.toStringAsFixed(2),
+                                      style: Font.number(
                                         fontSize: 20.0,
                                         color: Warna.baseWhite,
-                                        fontWeight: FontWeight.w500,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                  const Divider(height: 5),
-                                  Expanded(
-                                    child: DChartSingleBar(
-                                      backgroundColor: controller.kalori > 0.0
-                                          ? Colors.red
-                                          : controller.kalori == 0.0
-                                              ? Colors.grey
-                                              : Colors.green,
-                                      forgroundColor: Colors.blue,
-                                      value: controller.maxNValue['value']!,
-                                      max: controller.maxNValue['max']!,
+                                    teksLanguage(
+                                      Kalkulator.kategoriIMT(
+                                        isMan:
+                                            controller.getProfile.value.isMan!,
+                                        imt: double.parse(
+                                            controller.getProfile.value.imt!),
+                                      ).toUpperCase(),
+                                      style: Font.regular(
+                                        fontSize: 15.0,
+                                        color: Warna.baseWhite,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                  Text(
-                                    controller.kkt.toStringAsFixed(2),
-                                    style: Font.number(
-                                      fontSize: 20.0,
-                                      color: Warna.baseWhite,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  teksLanguage(
-                                    Kalkulator.kategoriIMT(
-                                      isMan: controller.getProfile.value.isMan!,
-                                      imt: double.parse(
-                                          controller.getProfile.value.imt!),
-                                    ).toUpperCase(),
-                                    style: Font.regular(
-                                      fontSize: 15.0,
-                                      color: Warna.baseWhite,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -453,7 +774,7 @@ class HomeViewState extends State<HomeView> {
                                           height: 50,
                                           child: Center(
                                             child: teksLanguage(
-                                              "LIST GENERATE FOODS",
+                                              "LIST GENERATE FOOD",
                                               style: Font.regular(
                                                 fontSize: 15.0,
                                                 fontWeight: FontWeight.bold,
@@ -465,22 +786,32 @@ class HomeViewState extends State<HomeView> {
                                           thickness: 2,
                                           height: 5,
                                         ),
-                                        ListView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemCount: controller
-                                              .getGenerate[Kalkulator.timeNow]
-                                              .length,
-                                          itemBuilder: (context, index) {
-                                            Foods foods = Foods.fromJson(
-                                                controller.getGenerate[
-                                                    Kalkulator.timeNow][index]);
-                                            return CardFood(
-                                              foods: foods,
-                                              isRecently: true,
-                                            );
-                                          },
+                                        AnimationLimiter(
+                                          child: ListView.builder(
+                                            itemCount: controller
+                                                .getGenerate[Kalkulator.timeNow]
+                                                .length,
+                                            itemBuilder: (context, index) {
+                                              Foods foods = Foods.fromJson(
+                                                  controller.getGenerate[
+                                                          Kalkulator.timeNow]
+                                                      [index]);
+                                              return AnimationConfiguration
+                                                  .staggeredList(
+                                                position: index,
+                                                duration:
+                                                    const Duration(seconds: 3),
+                                                child: SlideAnimation(
+                                                  horizontalOffset: 50.0,
+                                                  child: FadeInAnimation(
+                                                    child: CardFood(
+                                                        foods: foods,
+                                                        isRecently: true),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -497,7 +828,7 @@ class HomeViewState extends State<HomeView> {
                                     size: 24.0,
                                   ),
                                   label: teksLanguage(
-                                    'Going To Generate Food',
+                                    'Food recommendations',
                                     style: Font.regular(
                                       fontSize: 13.0,
                                     ),
@@ -515,7 +846,7 @@ class HomeViewState extends State<HomeView> {
                                 size: 24.0,
                               ),
                               label: teksLanguage(
-                                'Going To Generate Food',
+                                'Going to Food recommendations',
                                 style: Font.regular(
                                   fontSize: 13.0,
                                 ),
@@ -609,7 +940,6 @@ class HomeViewState extends State<HomeView> {
       },
       onSkip: () async {
         await Storages.setTutorial(tutorial: TutorialModel(homepage: true));
-        Get.toNamed(Routes.INPUTDATA);
       },
     );
   }
@@ -628,7 +958,6 @@ class HomeViewState extends State<HomeView> {
       },
       onSkip: () async {
         await Storages.setTutorial(tutorial: TutorialModel(finish: true));
-        Get.toNamed(Routes.GENERATE);
       },
     );
   }

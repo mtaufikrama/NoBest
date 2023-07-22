@@ -14,6 +14,7 @@ abstract class Routes {
   static const FOOD = _Paths.FOOD;
   static const IMAGES = _Paths.IMAGES;
   static const FINISHGENERATE = _Paths.FINISHGENERATE;
+  static const SPLASH = _Paths.SPLASH;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const FOOD = '/food';
   static const IMAGES = '/images';
   static const FINISHGENERATE = '/finishgenerate';
+  static const SPLASH = '/splash';
 }

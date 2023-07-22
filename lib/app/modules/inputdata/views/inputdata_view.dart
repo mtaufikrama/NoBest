@@ -240,6 +240,10 @@ class _InputdataViewState extends State<InputdataView> {
                           color: Colors.grey,
                         ),
                       ),
+                      suffix: const ImageIcon(
+                        AssetImage(IconApp.date),
+                        size: 20,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(

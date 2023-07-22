@@ -31,4 +31,15 @@ class HomeController extends GetxController {
     double value = kkt - kalori;
     return value;
   }
+
+  final defisitKalori = [
+    -1.0,
+    0.0,
+    1.0,
+    2.0,
+  ];
+
+  final selectedDeficitValue =
+      double.parse(Publics.controller.getProfile.value.kiloPembakaran ?? '0.0')
+          .obs;
 }

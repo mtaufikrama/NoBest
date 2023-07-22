@@ -7,6 +7,7 @@ class GenerateController extends GetxController {
 
   final getProfile = Publics.controller.getProfile;
   final getRecently = Publics.controller.getRecently;
+  final getTutorial = Publics.controller.getTutorial;
   final pal = [
     KategoriPAL.tidakPernah,
     KategoriPAL.jarang,

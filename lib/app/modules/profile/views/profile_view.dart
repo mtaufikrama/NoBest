@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:nobes/app/data/services/font.dart';
 import 'package:nobes/app/data/services/icon_app.dart';
 import 'package:nobes/app/data/services/kalkulasi.dart';
-import 'package:nobes/app/data/services/public.dart';
 import 'package:nobes/app/data/services/translate.dart';
 import 'package:nobes/app/data/widget/refresh_page.dart';
 import 'package:nobes/app/routes/app_pages.dart';
@@ -30,6 +29,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   GlobalKey keyFoto = GlobalKey();
   GlobalKey keyForm = GlobalKey();
+  GlobalKey keyBack = GlobalKey();
 
   final controller = Get.put(ProfileController());
 
@@ -51,7 +51,13 @@ class _ProfileViewState extends State<ProfileView> {
           style: Font.regular(),
         ),
         centerTitle: true,
-        leading: Publics.leading,
+        leading: IconButton(
+          key: keyBack,
+          onPressed: () => Get.back(),
+          icon: const ImageIcon(
+            AssetImage(IconApp.back),
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () => Get.toNamed(Routes.INPUTDATA),
@@ -282,6 +288,28 @@ class _ProfileViewState extends State<ProfileView> {
             builder: (context, controller) {
               return teksLanguage(
                 "Profile Data:\nDisplaying user data that has been inputted on the data input page.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        identify: "Back",
+        keyTarget: keyBack,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        enableOverlayTab: true,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Back To Home Page",
                 style: Font.regular(
                   color: Colors.white,
                 ),

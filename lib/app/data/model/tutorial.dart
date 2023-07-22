@@ -5,6 +5,7 @@ class TutorialModel {
   bool? generateFood;
   bool? inputProfile;
   bool? finish;
+  bool? search;
   TutorialModel({
     this.generateFood,
     this.finish,
@@ -12,6 +13,7 @@ class TutorialModel {
     this.listFood,
     this.profile,
     this.inputProfile,
+    this.search,
   });
 
   TutorialModel.fromJson(Map<dynamic, dynamic> json) {
@@ -21,6 +23,7 @@ class TutorialModel {
     profile = json['profile'];
     finish = json['finish'];
     inputProfile = json['input_profile'];
+    search = json['search'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +34,7 @@ class TutorialModel {
     data['list_food'] = listFood;
     data['finish'] = finish;
     data['input_profile'] = inputProfile;
+    data['search'] = search;
     return data;
   }
 }

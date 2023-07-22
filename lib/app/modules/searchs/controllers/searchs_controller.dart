@@ -14,6 +14,7 @@ class SearchsController extends GetxController {
   final searchController = TextEditingController();
   final getSearch = Publics.controller.getSearch;
   final getBahasa = Publics.controller.getBahasa;
+  final getTutorial = Publics.controller.getTutorial;
 
   @override
   void onInit() {
