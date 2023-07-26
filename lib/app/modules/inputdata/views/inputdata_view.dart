@@ -164,7 +164,7 @@ class _InputdataViewState extends State<InputdataView> {
                                           Icons.camera,
                                         ),
                                         label: teksLanguage(
-                                          'Gallery',
+                                          'Camera',
                                           style: Font.regular(),
                                         ),
                                       ),
@@ -395,7 +395,7 @@ class _InputdataViewState extends State<InputdataView> {
             align: ContentAlign.bottom,
             builder: (context, controller) {
               return teksLanguage(
-                "Titulo lorem ipsum",
+                "Profile Photo:\nTo insert a profile photo, you can either capture it using the camera or choose one from the folder.",
                 style: Font.regular(
                   color: Colors.white,
                 ),
@@ -486,7 +486,7 @@ class _InputdataViewState extends State<InputdataView> {
             align: ContentAlign.top,
             builder: (context, controller) {
               return teksLanguage(
-                "Enter age:\nEntering age is mandatory as it is used to calculate the user's BMR (Basal Metabolic Rate).",
+                "age:\nEntering age is mandatory as it is used to calculate the user's BMR (Basal Metabolic Rate).",
                 style: Font.regular(
                   color: Colors.white,
                 ),
@@ -513,7 +513,7 @@ class _InputdataViewState extends State<InputdataView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   teksLanguage(
-                    "Titulo lorem ipsum",
+                    "Gender:\nPlease specify your gender by selecting 'Male' or 'Female' to calculate your BMR (Basal Metabolic Rate) and BMI (Body Mass Index).",
                     style: Font.regular(
                       color: Colors.white,
                     ),
@@ -540,7 +540,7 @@ class _InputdataViewState extends State<InputdataView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   teksLanguage(
-                    "Titulo lorem ipsum",
+                    "Submit Button:\nUsed to save the data you have inputted.",
                     style: Font.regular(
                       color: Colors.white,
                     ),

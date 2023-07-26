@@ -293,7 +293,7 @@ class _GenerateViewState extends State<GenerateView> {
                     ),
                   ),
                   isExpanded: true,
-                  hint: controller.getProfile.value.pal == null
+                  hint: controller.getProfile.value.kaloriPembakaran == null
                       ? teksLanguage(
                           'Energy Deficit',
                           style: Font.regular(fontSize: 14),
@@ -370,14 +370,14 @@ class _GenerateViewState extends State<GenerateView> {
                         ),
                       )
                       .toList(),
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select Physical Activity Level';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    controller.selectedDeficitValue.value = value!;
+                  onChanged: (value) async {
+                    await Storages.setProfile(
+                      height: controller.getProfile.value.height ?? '',
+                      weight: controller.getProfile.value.weight ?? '',
+                      age: controller.getProfile.value.age ?? '',
+                      isMan: controller.getProfile.value.isMan ?? false,
+                      kiloPembakaran: value.toString(),
+                    );
                   },
                   buttonStyleData: const ButtonStyleData(
                     height: 60,
@@ -490,13 +490,12 @@ class _GenerateViewState extends State<GenerateView> {
               weight: controller.getProfile.value.weight!,
               age: controller.getProfile.value.age!,
               isMan: controller.getProfile.value.isMan!,
-              kiloPembakaran: controller.selectedDeficitValue.value.toString(),
-              pal: controller.selectedValue.value.nilai.toString(),
+              kiloPembakaran: controller.getProfile.value.kiloPembakaran,
             );
             List<Foods> foodGenerate =
                 Kalkulator.generateKnapSack(foods: listFood);
             await Storages.setGenerate(foods: foodGenerate);
-            Get.toNamed(Routes.FINISHGENERATE);
+            Get.toNamed(Routes.HOME);
           } else {
             Publics.snackBarFail(
               'Fail to Process',
@@ -611,7 +610,7 @@ class _GenerateViewState extends State<GenerateView> {
             align: ContentAlign.top,
             builder: (context, controller) {
               return teksLanguage(
-                "Enter height:\nEntering height is mandatory as it is used to calculate the user's BMI (Body Mass Index) and BMR (Basal Metabolic Rate).",
+                "Send button:\nThe data inputted above (profile data, calorie deficit, and food list) will be calculated to determine the appropriate food intake based on the body's calorie requirements, considering the BMR subtracted by your calorie deficit.",
                 style: Font.regular(
                   color: Colors.white,
                 ),

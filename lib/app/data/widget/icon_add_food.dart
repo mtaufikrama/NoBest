@@ -36,12 +36,13 @@ class AddFood extends StatelessWidget {
                 );
               } else {
                 Publics.snackBarFail('Fail To Input Serving Size',
-                    'Form serving size must be filled.');
+                    'serving size must be filled.');
               }
             },
             textConfirm: 'OK',
             content: FormProfile(
-              label: 'Serving Size *',
+              label:
+                  'Serving Size  ${foods.servingSizeUnit != null ? '(${foods.servingSizeUnit})' : ''}*',
               controller: controller,
               keyboardType: TextInputType.number,
               autofocus: true,

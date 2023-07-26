@@ -246,7 +246,6 @@ class _ProfileViewState extends State<ProfileView> {
       },
       onSkip: () async {
         await Storages.setTutorial(tutorial: TutorialModel(profile: true));
-        Get.offNamed(Routes.HOME);
       },
     );
   }

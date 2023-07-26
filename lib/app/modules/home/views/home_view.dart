@@ -1010,7 +1010,7 @@ class HomeViewState extends State<HomeView> {
       TargetFocus(
         identify: "Profile",
         keyTarget: keyProfile,
-        color: Warna.primary,
+        color: Colors.red,
         alignSkip: Alignment.topRight,
         enableOverlayTab: true,
         contents: [
@@ -1037,6 +1037,7 @@ class HomeViewState extends State<HomeView> {
       TargetFocus(
         identify: "BMI",
         keyTarget: keyBMI,
+        shape: ShapeLightFocus.RRect,
         color: Warna.primary,
         alignSkip: Alignment.topRight,
         contents: [
@@ -1058,11 +1059,12 @@ class HomeViewState extends State<HomeView> {
       TargetFocus(
         identify: "BMR",
         keyTarget: keyBMR,
+        shape: ShapeLightFocus.RRect,
         alignSkip: Alignment.topRight,
         color: Warna.primary,
         contents: [
           TargetContent(
-            align: ContentAlign.top,
+            align: ContentAlign.bottom,
             builder: (context, controller) {
               return teksLanguage(
                 "BMR Chart:\nTo display the user's BMR chart and the results of subtracting the user's BMR with their calorie deficit.",
@@ -1078,13 +1080,14 @@ class HomeViewState extends State<HomeView> {
     targets.add(
       TargetFocus(
         identify: "Generate",
+        shape: ShapeLightFocus.RRect,
         keyTarget: keyGenerate,
-        color: Warna.primary,
+        color: Colors.red,
         alignSkip: Alignment.topRight,
         enableOverlayTab: true,
         contents: [
           TargetContent(
-            align: ContentAlign.top,
+            align: ContentAlign.bottom,
             builder: (context, controller) {
               return teksLanguage(
                 "Generate Food Button:\nUsed to organize today's food from the inputted food list, based on the calorie requirements of the user's body calculated by subtracting the desired calorie deficit from the BMR formula.",
