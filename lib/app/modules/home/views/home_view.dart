@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:convert';
 import 'dart:ui';
 import 'package:d_chart/d_chart.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -101,8 +101,8 @@ class HomeViewState extends State<HomeView> {
                 return const ImageIcon(AssetImage(IconApp.user));
               } else {
                 return CircleAvatar(
-                  backgroundImage:
-                      FileImage(File(controller.getProfile.value.image!)),
+                  backgroundImage: MemoryImage(
+                      base64Decode(controller.getProfile.value.image!)),
                 );
               }
             }),
@@ -1122,7 +1122,6 @@ class HomeViewState extends State<HomeView> {
     targets.add(
       TargetFocus(
         identify: "Generate",
-        shape: ShapeLightFocus.RRect,
         keyTarget: keyGenerate,
         color: Colors.red,
         alignSkip: Alignment.topRight,

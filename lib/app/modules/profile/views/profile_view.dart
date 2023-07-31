@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -88,8 +88,9 @@ class _ProfileViewState extends State<ProfileView> {
                           image: controller.getProfile.value.image != null
                               ? DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: FileImage(
-                                    File(controller.getProfile.value.image!),
+                                  image: MemoryImage(
+                                    base64Decode(
+                                        controller.getProfile.value.image!),
                                   ),
                                 )
                               : const DecorationImage(
@@ -303,7 +304,7 @@ class _ProfileViewState extends State<ProfileView> {
       TargetFocus(
         identify: "Back",
         keyTarget: keyBack,
-        color: Warna.primary,
+        color: Colors.red,
         alignSkip: Alignment.topRight,
         enableOverlayTab: true,
         contents: [

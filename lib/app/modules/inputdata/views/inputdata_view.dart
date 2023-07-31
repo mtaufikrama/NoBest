@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
@@ -85,7 +86,7 @@ class _InputdataViewState extends State<InputdataView> {
                                       controller.imagePath.value.isNotEmpty
                                   ? DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: FileImage(File(
+                                      image: MemoryImage(base64Decode(
                                           controller.imagePath.value.isNotEmpty
                                               ? controller.imagePath.value
                                               : controller
@@ -133,8 +134,13 @@ class _InputdataViewState extends State<InputdataView> {
                                               await picker.pickImage(
                                                   source: ImageSource.gallery);
                                           if (image != null) {
+                                            File imaged = File(image.path);
+                                            List<int> imageBytes =
+                                                await imaged.readAsBytes();
+                                            String base64Image =
+                                                base64Encode(imageBytes);
                                             controller.imagePath.value =
-                                                image.path;
+                                                base64Image;
                                           }
                                         },
                                         icon: const Icon(Icons.filter_rounded),
@@ -156,8 +162,13 @@ class _InputdataViewState extends State<InputdataView> {
                                               await picker.pickImage(
                                                   source: ImageSource.camera);
                                           if (image != null) {
+                                            File imaged = File(image.path);
+                                            List<int> imageBytes =
+                                                await imaged.readAsBytes();
+                                            String base64Image =
+                                                base64Encode(imageBytes);
                                             controller.imagePath.value =
-                                                image.path;
+                                                base64Image;
                                           }
                                         },
                                         icon: const Icon(

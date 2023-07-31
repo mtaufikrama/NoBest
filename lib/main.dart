@@ -19,7 +19,7 @@ void main() async {
   // await Storages.boxBahasa.clear();
   // await Storages.boxProfile.clear();
   // await Storages.boxSearch.clear();
-  await Storages.boxTutorial.clear();
+  // await Storages.boxTutorial.clear();
   // await Storages.boxGenerateMenu.clear();
   // await Storages.boxDailyMenu.clear();
   // await Storages.boxRecentlyMenu.clear();
