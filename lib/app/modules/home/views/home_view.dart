@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:ui';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:d_chart/d_chart.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -568,8 +567,8 @@ class HomeViewState extends State<HomeView> {
                                       padding: const EdgeInsets.only(top: 5),
                                       child: Text(
                                         controller.getBahasa.value == 'id'
-                                            ? 'AMB'
-                                            : 'BMR',
+                                            ? 'Kebutuhan Kalori'
+                                            : 'Calorie Needs',
                                         style: Font.regular(
                                           fontSize: 20.0,
                                           color: Warna.baseWhite,
@@ -624,143 +623,183 @@ class HomeViewState extends State<HomeView> {
                         ? controller.getGenerate[Kalkulator.timeNow] != null
                             ? Column(
                                 children: [
-                                  Row(
-                                    children: [1008, 1003, 1004, 1005].map(
-                                      (nutrientId) {
-                                        List<Foods> dataGenerate =
-                                            (controller.getGenerate[
-                                                    Kalkulator.timeNow] as List)
-                                                .map((e) => Foods.fromJson(e))
-                                                .toList();
-                                        double nilai = 0;
-                                        dataGenerate.map((e) {
-                                          double value = e.servingSize !=
-                                                      null &&
-                                                  e.servingSizeUnit != null
-                                              ? Kalkulator.porsi(
-                                                  size: e.servingSize ?? 100,
-                                                  value: e.foodNutrients!
-                                                          .firstWhere(
-                                                            (data) =>
-                                                                data.nutrientId ==
-                                                                nutrientId,
-                                                            orElse: () =>
-                                                                FoodNutrients(
-                                                                    value: 0),
-                                                          )
-                                                          .value ??
-                                                      0)
-                                              : (e.foodNutrients!
-                                                      .firstWhere(
-                                                        (data) =>
-                                                            data.nutrientId ==
-                                                            nutrientId,
-                                                        orElse: () =>
-                                                            FoodNutrients(
-                                                                value: 0),
-                                                      )
-                                                      .value ??
-                                                  0);
-                                          nilai += value;
-                                        }).toList();
-                                        return Expanded(
-                                          child: AspectRatio(
-                                            aspectRatio: 1,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(3),
-                                              child: Card(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  side: const BorderSide(
-                                                    color: Colors.grey,
-                                                    width: 1.5,
-                                                  ),
-                                                ),
-                                                color: Colors.black,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .stretch,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 8),
-                                                      child: teksLanguage(
-                                                        dataGenerate.first
-                                                                .foodNutrients!
-                                                                .firstWhere(
-                                                                  (data) =>
-                                                                      data.nutrientId ==
-                                                                      nutrientId,
-                                                                  orElse: () =>
-                                                                      FoodNutrients(
-                                                                          nutrientName:
-                                                                              'null'),
-                                                                )
-                                                                .nutrientName ??
-                                                            'null',
-                                                        style: Font.regular(
-                                                          color:
-                                                              Warna.baseWhite,
-                                                          fontSize: 10.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    ),
-                                                    const Divider(),
-                                                    Expanded(
-                                                      child: Center(
-                                                        child: AutoSizeText(
-                                                          nilai.toStringAsFixed(
-                                                              2),
-                                                          style: Font.number(
-                                                            color:
-                                                                Warna.secondary,
-                                                            fontSize: 50,
-                                                          ),
-                                                          maxLines: 1,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      dataGenerate.first
-                                                              .foodNutrients!
-                                                              .firstWhere(
-                                                                (data) =>
-                                                                    data.nutrientId ==
-                                                                    nutrientId,
-                                                                orElse: () =>
-                                                                    FoodNutrients(
-                                                                        unitName:
-                                                                            'null'),
-                                                              )
-                                                              .unitName ??
-                                                          'null',
-                                                      style: Font.regular(
-                                                        color: Warna.secondary,
-                                                        fontSize: 12.0,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ],
+                                  // Row(
+                                  //   children: [1008, 1003, 1004, 1005].map(
+                                  //     (nutrientId) {
+                                  //       List<Foods> dataGenerate =
+                                  //           (controller.getGenerate[
+                                  //                   Kalkulator.timeNow] as List)
+                                  //               .map((e) => Foods.fromJson(e))
+                                  //               .toList();
+                                  //       double nilai = 0;
+                                  //       dataGenerate.map((e) {
+                                  //         double value = e.servingSize !=
+                                  //                     null &&
+                                  //                 e.servingSizeUnit != null
+                                  //             ? Kalkulator.porsi(
+                                  //                 size: e.servingSize ?? 100,
+                                  //                 value: e.foodNutrients!
+                                  //                         .firstWhere(
+                                  //                           (data) =>
+                                  //                               data.nutrientId ==
+                                  //                               nutrientId,
+                                  //                           orElse: () =>
+                                  //                               FoodNutrients(
+                                  //                                   value: 0),
+                                  //                         )
+                                  //                         .value ??
+                                  //                     0)
+                                  //             : (e.foodNutrients!
+                                  //                     .firstWhere(
+                                  //                       (data) =>
+                                  //                           data.nutrientId ==
+                                  //                           nutrientId,
+                                  //                       orElse: () =>
+                                  //                           FoodNutrients(
+                                  //                               value: 0),
+                                  //                     )
+                                  //                     .value ??
+                                  //                 0);
+                                  //         nilai += value;
+                                  //       }).toList();
+                                  //       return Expanded(
+                                  //         child: AspectRatio(
+                                  //           aspectRatio: 1,
+                                  //           child: Padding(
+                                  //             padding: const EdgeInsets.all(3),
+                                  //             child: Card(
+                                  //               shape: RoundedRectangleBorder(
+                                  //                 borderRadius:
+                                  //                     BorderRadius.circular(15),
+                                  //                 side: const BorderSide(
+                                  //                   color: Colors.grey,
+                                  //                   width: 1.5,
+                                  //                 ),
+                                  //               ),
+                                  //               color: Colors.black,
+                                  //               child: Column(
+                                  //                 crossAxisAlignment:
+                                  //                     CrossAxisAlignment
+                                  //                         .stretch,
+                                  //                 children: [
+                                  //                   Padding(
+                                  //                     padding:
+                                  //                         const EdgeInsets.only(
+                                  //                             top: 8),
+                                  //                     child: teksLanguage(
+                                  //                       dataGenerate.first
+                                  //                               .foodNutrients!
+                                  //                               .firstWhere(
+                                  //                                 (data) =>
+                                  //                                     data.nutrientId ==
+                                  //                                     nutrientId,
+                                  //                                 orElse: () =>
+                                  //                                     FoodNutrients(
+                                  //                                         nutrientName:
+                                  //                                             'null'),
+                                  //                               )
+                                  //                               .nutrientName ??
+                                  //                           'null',
+                                  //                       style: Font.regular(
+                                  //                         color:
+                                  //                             Warna.baseWhite,
+                                  //                         fontSize: 10.0,
+                                  //                         fontWeight:
+                                  //                             FontWeight.w500,
+                                  //                       ),
+                                  //                       maxLines: 1,
+                                  //                       overflow: TextOverflow
+                                  //                           .ellipsis,
+                                  //                       textAlign:
+                                  //                           TextAlign.center,
+                                  //                     ),
+                                  //                   ),
+                                  //                   const Divider(),
+                                  //                   Expanded(
+                                  //                     child: Center(
+                                  //                       child: AutoSizeText(
+                                  //                         nilai.toStringAsFixed(
+                                  //                             2),
+                                  //                         style: Font.number(
+                                  //                           color:
+                                  //                               Warna.secondary,
+                                  //                           fontSize: 50,
+                                  //                         ),
+                                  //                         maxLines: 1,
+                                  //                       ),
+                                  //                     ),
+                                  //                   ),
+                                  //                   Text(
+                                  //                     dataGenerate.first
+                                  //                             .foodNutrients!
+                                  //                             .firstWhere(
+                                  //                               (data) =>
+                                  //                                   data.nutrientId ==
+                                  //                                   nutrientId,
+                                  //                               orElse: () =>
+                                  //                                   FoodNutrients(
+                                  //                                       unitName:
+                                  //                                           'null'),
+                                  //                             )
+                                  //                             .unitName ??
+                                  //                         'null',
+                                  //                     style: Font.regular(
+                                  //                       color: Warna.secondary,
+                                  //                       fontSize: 12.0,
+                                  //                       fontWeight:
+                                  //                           FontWeight.w500,
+                                  //                     ),
+                                  //                     textAlign:
+                                  //                         TextAlign.center,
+                                  //                   ),
+                                  //                 ],
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     },
+                                  //   ).toList(),
+                                  // ),
+                                  Card(
+                                    margin: const EdgeInsets.all(5),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              teksLanguage(
+                                                '- ${(controller.kkt.toInt() - controller.nilaiKcal.toInt()).toStringAsFixed(2)} kcal',
+                                                style: Font.number(),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                flex: controller.nilaiKcal
+                                                    .toInt(),
+                                                child: const Divider(
+                                                  thickness: 5,
                                                 ),
                                               ),
-                                            ),
+                                              Expanded(
+                                                flex: (controller.kkt.toInt() -
+                                                    controller.nilaiKcal
+                                                        .toInt()),
+                                                child: const Divider(
+                                                  thickness: 5,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        );
-                                      },
-                                    ).toList(),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                   Card(
                                     shape: const RoundedRectangleBorder(
@@ -774,7 +813,7 @@ class HomeViewState extends State<HomeView> {
                                           height: 50,
                                           child: Center(
                                             child: teksLanguage(
-                                              "LIST GENERATE FOOD",
+                                              "LIST RECOMMENDATIONS FOOD",
                                               style: Font.regular(
                                                 fontSize: 15.0,
                                                 fontWeight: FontWeight.bold,
@@ -791,6 +830,9 @@ class HomeViewState extends State<HomeView> {
                                             itemCount: controller
                                                 .getGenerate[Kalkulator.timeNow]
                                                 .length,
+                                            shrinkWrap: true,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
                                             itemBuilder: (context, index) {
                                               Foods foods = Foods.fromJson(
                                                   controller.getGenerate[

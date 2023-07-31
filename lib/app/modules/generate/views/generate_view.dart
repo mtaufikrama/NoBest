@@ -67,126 +67,128 @@ class _GenerateViewState extends State<GenerateView> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Card(
-                    key: keyProfile,
-                    color: Warna.baseBlack,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      side: const BorderSide(
-                        width: 1.5,
-                        color: Colors.white,
+                  child: Obx(
+                    () => Card(
+                      key: keyProfile,
+                      color: Warna.baseBlack,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        side: const BorderSide(
+                          width: 1.5,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        controller.getProfile.value.height != null
-                            ? Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: teksLanguage(
-                                  "Is your current data correct?",
-                                  style: Font.regular(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: teksLanguage(
-                                  "Profile Data's is Not Available",
-                                  style: Font.regular(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                        controller.getProfile.value.height != null
-                            ? Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          controller.getProfile.value.height != null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: teksLanguage(
+                                    "Is your current data correct?",
+                                    style: Font.regular(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        teksLanguage(
-                                          'height',
-                                          style: Font.regular(fontSize: 18),
-                                        ),
-                                        teksLanguage(
-                                          'weight',
-                                          style: Font.regular(fontSize: 18),
-                                        ),
-                                        teksLanguage(
-                                          'age',
-                                          style: Font.regular(fontSize: 18),
-                                        ),
-                                        teksLanguage(
-                                          'Gender',
-                                          style: Font.regular(fontSize: 18),
-                                        ),
-                                      ],
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: teksLanguage(
+                                    "Profile Data's is Not Available",
+                                    style: Font.regular(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w500,
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: Obx(() {
-                                      return Column(
+                                ),
+                          controller.getProfile.value.height != null
+                              ? Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                      ),
+                                      child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            ": ${controller.getProfile.value.height ?? 'null'} cm",
-                                            style: Font.regular(fontSize: 18),
-                                          ),
-                                          Text(
-                                            ": ${controller.getProfile.value.weight ?? 'null'} kg",
+                                          teksLanguage(
+                                            'height',
                                             style: Font.regular(fontSize: 18),
                                           ),
                                           teksLanguage(
-                                            ": ${controller.getProfile.value.age ?? 'null'} years old",
+                                            'weight',
                                             style: Font.regular(fontSize: 18),
                                           ),
                                           teksLanguage(
-                                            ": ${controller.getProfile.value.isMan == true ? 'Male' : 'Female'}",
+                                            'age',
+                                            style: Font.regular(fontSize: 18),
+                                          ),
+                                          teksLanguage(
+                                            'Gender',
                                             style: Font.regular(fontSize: 18),
                                           ),
                                         ],
-                                      );
-                                    }),
-                                  ),
-                                ],
-                              )
-                            : Container(),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                          ),
-                          child: ElevatedButton.icon(
-                            icon: const ImageIcon(
-                              AssetImage(
-                                IconApp.edit,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Expanded(
+                                      child: Obx(() {
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ": ${controller.getProfile.value.height ?? 'null'} cm",
+                                              style: Font.regular(fontSize: 18),
+                                            ),
+                                            Text(
+                                              ": ${controller.getProfile.value.weight ?? 'null'} kg",
+                                              style: Font.regular(fontSize: 18),
+                                            ),
+                                            teksLanguage(
+                                              ": ${controller.getProfile.value.age ?? 'null'} years old",
+                                              style: Font.regular(fontSize: 18),
+                                            ),
+                                            teksLanguage(
+                                              ": ${controller.getProfile.value.isMan == true ? 'Male' : 'Female'}",
+                                              style: Font.regular(fontSize: 18),
+                                            ),
+                                          ],
+                                        );
+                                      }),
+                                    ),
+                                  ],
+                                )
+                              : Container(),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 10,
+                              left: 10,
+                              right: 10,
+                            ),
+                            child: ElevatedButton.icon(
+                              icon: const ImageIcon(
+                                AssetImage(
+                                  IconApp.edit,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blueGrey),
+                              onPressed: () => Get.toNamed(Routes.INPUTDATA),
+                              label: teksLanguage(
+                                "Edit Profile",
+                                style: Font.regular(),
                               ),
                             ),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blueGrey),
-                            onPressed: () => Get.toNamed(Routes.INPUTDATA),
-                            label: teksLanguage(
-                              "Edit Profile",
-                              style: Font.regular(),
-                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -399,76 +401,97 @@ class _GenerateViewState extends State<GenerateView> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Card(
-                    key: keyListFood,
-                    color: Warna.baseBlack,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: const BorderSide(
-                          width: 1.5,
-                          color: Colors.white,
-                        )),
-                    child: controller.getRecently.isNotEmpty
-                        ? Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: teksLanguage(
-                                  'Food List',
-                                  style: Font.regular(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              ListView.builder(
-                                itemCount: controller.getRecently.length,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  Foods foods = Foods.fromJson(
-                                      controller.getRecently[index]);
-                                  return CardFood(
-                                    foods: foods,
-                                    isRecently: true,
-                                  );
-                                },
-                              ),
-                            ],
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: Obx(
+                    () => Card(
+                      key: keyListFood,
+                      color: Warna.baseBlack,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: const BorderSide(
+                            width: 1.5,
+                            color: Colors.white,
+                          )),
+                      child: controller.getRecently.isNotEmpty
+                          ? Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: teksLanguage(
-                                    'Food list is Not Available',
-                                    style: Font.regular(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w500,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: teksLanguage(
+                                          'Food List',
+                                          style: Font.regular(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                    IconButton(
+                                      onPressed: () =>
+                                          Get.toNamed(Routes.SEARCH),
+                                      icon: const ImageIcon(
+                                        color: Warna.primary,
+                                        size: 20,
+                                        AssetImage(
+                                          IconApp.add,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                ElevatedButton.icon(
-                                  icon: const ImageIcon(
-                                    AssetImage(
-                                      IconApp.search,
-                                    ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blueGrey),
-                                  onPressed: () => Get.toNamed(Routes.SEARCH),
-                                  label: teksLanguage(
-                                    "Add Food List",
-                                    style: Font.regular(),
-                                  ),
+                                ListView.builder(
+                                  itemCount: controller.getRecently.length,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    Foods foods = Foods.fromJson(
+                                        controller.getRecently[index]);
+                                    return CardFood(
+                                      foods: foods,
+                                      isRecently: true,
+                                    );
+                                  },
                                 ),
                               ],
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: teksLanguage(
+                                      'Food list is Not Available',
+                                      style: Font.regular(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  ElevatedButton.icon(
+                                    icon: const ImageIcon(
+                                      AssetImage(
+                                        IconApp.search,
+                                      ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blueGrey),
+                                    onPressed: () => Get.toNamed(Routes.SEARCH),
+                                    label: teksLanguage(
+                                      "Add Food List",
+                                      style: Font.regular(),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                    ),
                   ),
                 ),
               ],

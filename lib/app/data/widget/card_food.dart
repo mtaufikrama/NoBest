@@ -127,7 +127,7 @@ class CardFood extends StatelessWidget {
                       maxLines: 1,
                     ),
                   ),
-                  Text(
+                  teksLanguage(
                     foods.foodNutrients!
                             .firstWhere(
                               (data) => data.nutrientId == 1008,
@@ -136,7 +136,7 @@ class CardFood extends StatelessWidget {
                             .unitName ??
                         'null',
                     style: Font.regular(
-                      color: Warna.secondary,
+                      color: Warna.baseWhite,
                       fontSize: 12.0,
                       fontWeight: FontWeight.w500,
                     ),
