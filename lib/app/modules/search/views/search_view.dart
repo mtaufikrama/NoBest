@@ -13,16 +13,16 @@ import 'package:nobes/app/routes/app_pages.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import '../../../data/model/tutorial.dart';
 import '../../../data/services/getstorages.dart';
-import '../controllers/searchs_controller.dart';
+import '../controllers/search_controller.dart';
 
-class SearchsView extends StatefulWidget {
-  const SearchsView({super.key});
+class SearchView extends StatefulWidget {
+  const SearchView({super.key});
 
   @override
-  State<SearchsView> createState() => _SearchsViewState();
+  State<SearchView> createState() => _SearchViewState();
 }
 
-class _SearchsViewState extends State<SearchsView> {
+class _SearchViewState extends State<SearchView> {
   late TutorialCoachMark tutorialCoachMark;
 
   GlobalKey keySearch = GlobalKey();
@@ -33,7 +33,7 @@ class _SearchsViewState extends State<SearchsView> {
 
   @override
   void initState() {
-    if (controller.getTutorial.value.profile != true) {
+    if (controller.getTutorial.value.search != true) {
       createTutorial();
       Future.delayed(Duration.zero, showTutorial);
     }
@@ -62,6 +62,7 @@ class _SearchsViewState extends State<SearchsView> {
               children: [
                 Expanded(
                   child: TextFormField(
+                    key: keySearch,
                     autofocus: true,
                     controller: controller.searchController,
                     decoration: InputDecoration(
@@ -82,6 +83,7 @@ class _SearchsViewState extends State<SearchsView> {
                   ),
                 ),
                 IconButton(
+                  key: keySend,
                   onPressed: controller.onSubmit,
                   icon: const ImageIcon(
                     AssetImage(
@@ -93,6 +95,7 @@ class _SearchsViewState extends State<SearchsView> {
             ),
             Obx(() {
               return ListView.builder(
+                key: keyHistory,
                 itemCount: controller.getSearch.length,
                 shrinkWrap: true,
                 reverse: true,
@@ -138,12 +141,10 @@ class _SearchsViewState extends State<SearchsView> {
       opacityShadow: 0.5,
       imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
       onFinish: () async {
-        await Storages.setTutorial(tutorial: TutorialModel(profile: true));
-        Get.offNamed(Routes.HOME);
+        await Storages.setTutorial(tutorial: TutorialModel(search: true));
       },
       onSkip: () async {
-        await Storages.setTutorial(tutorial: TutorialModel(profile: true));
-        Get.offNamed(Routes.HOME);
+        await Storages.setTutorial(tutorial: TutorialModel(search: true));
       },
     );
   }
@@ -152,16 +153,17 @@ class _SearchsViewState extends State<SearchsView> {
     List<TargetFocus> targets = [];
     targets.add(
       TargetFocus(
-        identify: "Foto",
+        identify: "Search",
         keyTarget: keySearch,
+        shape: ShapeLightFocus.RRect,
         alignSkip: Alignment.topRight,
         color: Warna.primary,
         contents: [
           TargetContent(
-            align: ContentAlign.top,
+            align: ContentAlign.bottom,
             builder: (context, controller) {
               return teksLanguage(
-                "Profile photo:To display the user's photo.",
+                "Profile photo:\nTo display the user's photo.",
                 style: Font.regular(
                   color: Colors.white,
                 ),
@@ -173,8 +175,7 @@ class _SearchsViewState extends State<SearchsView> {
     );
     targets.add(
       TargetFocus(
-        identify: "Form",
-        shape: ShapeLightFocus.RRect,
+        identify: "Send",
         keyTarget: keySend,
         color: Warna.primary,
         alignSkip: Alignment.topRight,
@@ -196,8 +197,9 @@ class _SearchsViewState extends State<SearchsView> {
     );
     targets.add(
       TargetFocus(
-        identify: "Back",
+        identify: "History",
         keyTarget: keyHistory,
+        shape: ShapeLightFocus.RRect,
         color: Warna.primary,
         alignSkip: Alignment.topRight,
         enableOverlayTab: true,

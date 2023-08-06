@@ -1,4 +1,4 @@
-package com.example.nobes
+package taufik.nobes.com
 
 import io.flutter.embedding.android.FlutterActivity
 

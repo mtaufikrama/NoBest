@@ -16,8 +16,8 @@ import '../modules/listfood/bindings/listfood_binding.dart';
 import '../modules/listfood/views/listfood_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
-import '../modules/searchs/bindings/searchs_binding.dart';
-import '../modules/searchs/views/searchs_view.dart';
+import '../modules/search/bindings/search_binding.dart';
+import '../modules/search/views/search_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 
@@ -58,8 +58,8 @@ class AppPages {
     GetPage(
       transition: Transition.downToUp,
       name: _Paths.SEARCH,
-      page: () => const SearchsView(),
-      binding: SearchsBinding(),
+      page: () => const SearchView(),
+      binding: SearchBinding(),
     ),
     GetPage(
       transition: Transition.rightToLeftWithFade,

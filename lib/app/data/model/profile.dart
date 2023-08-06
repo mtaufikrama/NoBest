@@ -6,7 +6,7 @@ class Profile {
   String? age;
   String? imt;
   String? pal;
-  String? kkt;
+  String? bmr;
   String? kaloriPembakaran;
   String? kiloPembakaran;
   bool? isMan;
@@ -19,7 +19,7 @@ class Profile {
     this.age,
     this.imt,
     this.pal,
-    this.kkt,
+    this.bmr,
     this.isMan,
     this.kaloriPembakaran,
     this.kiloPembakaran,
@@ -34,7 +34,7 @@ class Profile {
     imt = json['IMT'];
     isMan = json['gender'];
     pal = json['PAL'];
-    kkt = json['KKT'];
+    bmr = json['BMR'];
     kaloriPembakaran = json['kalori pembakaran'];
     kiloPembakaran = json['kilo pembakaran'];
   }
@@ -51,7 +51,7 @@ class Profile {
     data['PAL'] = pal;
     data['kalori pembakaran'] = kaloriPembakaran;
     data['kilo pembakaran'] = kiloPembakaran;
-    data['KKT'] = kkt;
+    data['BMR'] = bmr;
     return data;
   }
 }

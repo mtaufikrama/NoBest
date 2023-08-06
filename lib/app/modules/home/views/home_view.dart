@@ -49,8 +49,7 @@ class HomeViewState extends State<HomeView> {
       Future.delayed(Duration.zero, showTutorial);
     } else {
       if (controller.getTutorial.value.finish != true) {
-        if (controller.getProfile.value.age != null ||
-            controller.getProfile.value.age!.isNotEmpty) {
+        if (controller.getProfile.value.age != null) {
           createTutorial1();
           Future.delayed(Duration.zero, showTutorial1);
         }
@@ -92,6 +91,20 @@ class HomeViewState extends State<HomeView> {
               ),
               onTap: () async => await Storages.setBahasa(language: 'en'),
             ),
+            PopupMenuItem(
+              child: teksLanguage(
+                'Spanish',
+                style: Font.regular(),
+              ),
+              onTap: () async => await Storages.setBahasa(language: 'es'),
+            ),
+            PopupMenuItem(
+              child: teksLanguage(
+                'Thai',
+                style: Font.regular(),
+              ),
+              onTap: () async => await Storages.setBahasa(language: 'th'),
+            ),
           ],
         ),
         actions: [
@@ -116,7 +129,7 @@ class HomeViewState extends State<HomeView> {
         routes: Routes.HOME,
         child: Obx(
           () => controller.getGenerate.isNotEmpty ||
-                  controller.getProfile.value.kkt != null
+                  controller.getProfile.value.bmr != null
               ? ListView(
                   children: [
                     Row(
@@ -289,17 +302,17 @@ class HomeViewState extends State<HomeView> {
                               onTap: () {
                                 Get.defaultDialog(
                                     title:
-                                        'INFO ${controller.getBahasa.value == 'id' ? 'AMB' : 'BMR'}',
+                                        'INFO ${controller.getBahasa.value == 'id' ? 'KEBUTUHAN KALORI' : 'CALORIE NEEDS'}',
                                     titleStyle: Font.regular(),
                                     content: Column(
                                       children: [
-                                        Text(
-                                          controller.getBahasa.value == 'id'
-                                              ? 'Angka Metabolisme Badan\n'
-                                              : 'Body Metabolic Rate\n',
-                                          style: Font.regular(),
-                                          textAlign: TextAlign.center,
-                                        ),
+                                        // Text(
+                                        //   controller.getBahasa.value == 'id'
+                                        //       ? 'Angka Metabolisme Badan\n'
+                                        //       : 'Body Metabolic Rate\n',
+                                        //   style: Font.regular(),
+                                        //   textAlign: TextAlign.center,
+                                        // ),
                                         SingleChildScrollView(
                                           child: Column(
                                             children: [
@@ -481,7 +494,7 @@ class HomeViewState extends State<HomeView> {
                                                   return Column(
                                                     children: [
                                                       Text(
-                                                        "${controller.getBahasa.value == 'id' ? 'AMB' : 'BMR'} = ${controller.getProfile.value.kkt} kcal",
+                                                        "${controller.getBahasa.value == 'id' ? 'AMB' : 'BMR'} = ${controller.getProfile.value.bmr} kcal",
                                                         style: Font.regular(),
                                                         textAlign:
                                                             TextAlign.center,
@@ -499,15 +512,15 @@ class HomeViewState extends State<HomeView> {
                                                           controller.getBahasa
                                                                       .value !=
                                                                   'id'
-                                                              ? 'Calories In = BMR - Calorie Deficit'
-                                                              : 'Kalori Masuk = AMB - Defisit Kalori',
+                                                              ? 'Calorie Needs = BMR - Calorie Deficit'
+                                                              : 'Kebutuhan kalori = AMB - Defisit Kalori',
                                                           style: Font.regular(),
                                                           textAlign:
                                                               TextAlign.center,
                                                         ),
                                                       ),
                                                       Text(
-                                                        "${controller.getBahasa.value != 'id' ? 'Calorie In' : 'Kalori Masuk'} = ${double.parse(controller.getProfile.value.kkt ?? '0') - double.parse(controller.getProfile.value.kaloriPembakaran ?? '0')} kcal",
+                                                        "${controller.getBahasa.value != 'id' ? 'Calorie Needs' : 'Kebutuhan Kalori'} = ${double.parse(controller.getProfile.value.bmr ?? '0') - double.parse(controller.getProfile.value.kaloriPembakaran ?? '0')} kcal",
                                                         style: Font.regular(),
                                                         textAlign:
                                                             TextAlign.center,
@@ -591,7 +604,7 @@ class HomeViewState extends State<HomeView> {
                                       ),
                                     ),
                                     Text(
-                                      controller.kkt.toStringAsFixed(2),
+                                      Kalkulator.kkt.toStringAsFixed(2),
                                       style: Font.number(
                                         fontSize: 20.0,
                                         color: Warna.baseWhite,
@@ -599,12 +612,15 @@ class HomeViewState extends State<HomeView> {
                                       textAlign: TextAlign.center,
                                     ),
                                     teksLanguage(
-                                      Kalkulator.kategoriIMT(
-                                        isMan:
-                                            controller.getProfile.value.isMan!,
-                                        imt: double.parse(
-                                            controller.getProfile.value.imt!),
-                                      ).toUpperCase(),
+                                      double.parse(controller.getProfile.value
+                                                  .kiloPembakaran!) <
+                                              0.0
+                                          ? 'Gain 1 kg / 4 weeks'
+                                          : double.parse(controller.getProfile
+                                                      .value.kiloPembakaran!) ==
+                                                  0.0
+                                              ? 'No change'
+                                              : 'Lose ${double.parse(controller.getProfile.value.kiloPembakaran!).toInt()} kg / 4 weeks',
                                       style: Font.regular(
                                         fontSize: 15.0,
                                         color: Warna.baseWhite,
@@ -772,7 +788,7 @@ class HomeViewState extends State<HomeView> {
                                                 MainAxisAlignment.end,
                                             children: [
                                               teksLanguage(
-                                                '- ${(controller.kkt.toInt() - controller.nilaiKcal.toInt()).toStringAsFixed(2)} kcal',
+                                                '- ${(Kalkulator.kkt.toInt() - controller.nilaiKcal.toInt()).toStringAsFixed(2)} kcal',
                                                 style: Font.number(),
                                               ),
                                             ],
@@ -787,7 +803,7 @@ class HomeViewState extends State<HomeView> {
                                                 ),
                                               ),
                                               Expanded(
-                                                flex: (controller.kkt.toInt() -
+                                                flex: (Kalkulator.kkt.toInt() -
                                                     controller.nilaiKcal
                                                         .toInt()),
                                                 child: const Divider(
@@ -930,14 +946,16 @@ class HomeViewState extends State<HomeView> {
               backgroundColor: Colors.red,
               child: ImageIcon(AssetImage(IconApp.close)),
             ),
+            distance: 70,
+            childrenOffset: const Offset(8, 4),
             overlayStyle: ExpandableFabOverlayStyle(blur: 5),
-            type: ExpandableFabType.left,
+            type: ExpandableFabType.up,
             child: const ImageIcon(
               AssetImage(IconApp.menu),
             ),
             children: [
               FloatingActionButton.small(
-                  tooltip: 'Generate Food',
+                  tooltip: 'Recommended Food',
                   heroTag: IconApp.setting,
                   child: const ImageIcon(AssetImage(IconApp.setting)),
                   onPressed: () => Get.toNamed(Routes.GENERATE)),
@@ -1099,7 +1117,7 @@ class HomeViewState extends State<HomeView> {
     );
     targets.add(
       TargetFocus(
-        identify: "BMR",
+        identify: "KKT",
         keyTarget: keyBMR,
         shape: ShapeLightFocus.RRect,
         alignSkip: Alignment.topRight,
@@ -1109,7 +1127,7 @@ class HomeViewState extends State<HomeView> {
             align: ContentAlign.bottom,
             builder: (context, controller) {
               return teksLanguage(
-                "BMR Chart:\nTo display the user's BMR chart and the results of subtracting the user's BMR with their calorie deficit.",
+                "KKT Chart:\nTo display the user's BMR chart and the results of subtracting the user's BMR with their calorie deficit.",
                 style: Font.regular(
                   color: Colors.white,
                 ),
@@ -1131,7 +1149,7 @@ class HomeViewState extends State<HomeView> {
             align: ContentAlign.bottom,
             builder: (context, controller) {
               return teksLanguage(
-                "Generate Food Button:\nUsed to organize today's food from the inputted food list, based on the calorie requirements of the user's body calculated by subtracting the desired calorie deficit from the BMR formula.",
+                "Recommended Food Button:\nUsed to organize today's food from the inputted food list, based on the calorie requirements of the user's body calculated by subtracting the desired calorie deficit from the BMR formula.",
                 style: Font.regular(
                   color: Colors.white,
                 ),

@@ -57,6 +57,7 @@ class Storages {
     await boxTutorial.put(
         'input_profile', tutorial.inputProfile ?? tutor.inputProfile ?? false);
     await boxTutorial.put('finish', tutorial.finish ?? tutor.finish ?? false);
+    await boxTutorial.put('search', tutorial.search ?? tutor.search ?? false);
     Publics.controller.getTutorial.value = Storages.getTutorial;
     print(Publics.controller.getTutorial.value.toJson());
     return;
@@ -104,10 +105,10 @@ class Storages {
   static Future<void> setProfile({
     String? image,
     String? name,
-    required String height,
-    required String weight,
-    required String age,
-    required bool isMan,
+    String? height,
+    String? weight,
+    String? age,
+    bool? isMan,
     String? pal,
     String? kaloriPembakaran,
     String? kiloPembakaran,
@@ -115,15 +116,15 @@ class Storages {
     Profile profile = Storages.getProfile;
     await boxProfile.clear();
     final String imt = Kalkulator.imt(
-      weight: double.parse(weight),
-      height: double.parse(height),
+      weight: double.parse(weight ?? profile.weight ?? '0'),
+      height: double.parse(height ?? profile.height ?? '0'),
     ).toString();
     await boxProfile.put('image', image ?? profile.image);
     await boxProfile.put('name', name ?? profile.name);
-    await boxProfile.put('height', height);
-    await boxProfile.put('gender', isMan);
-    await boxProfile.put('weight', weight);
-    await boxProfile.put('age', age);
+    await boxProfile.put('height', height ?? profile.height);
+    await boxProfile.put('gender', isMan ?? profile.isMan ?? false);
+    await boxProfile.put('weight', weight ?? profile.weight ?? '0');
+    await boxProfile.put('age', age ?? profile.age ?? '0');
     await boxProfile.put('IMT', imt);
     double nilaiKalori = Kalkulator.nilaiKiloPembakaran(
       kategoriIMT: Kalkulator.kategoriIMT(
@@ -146,14 +147,14 @@ class Storages {
     await boxProfile.put('kalori pembakaran', kalori);
     await boxProfile.put('kilo pembakaran', kilo);
 
-    final bmr = Kalkulator.bmr(
-      isMan: isMan,
-      weight: double.parse(weight),
-      height: double.parse(height),
-      age: double.parse(age),
+    final nilaiBmr = Kalkulator.bmr(
+      isMan: isMan ?? profile.isMan ?? false,
+      weight: double.parse(weight ?? profile.weight ?? '0'),
+      height: double.parse(height ?? profile.height ?? '0'),
+      age: double.parse(age ?? profile.age ?? '0'),
     );
-    final String kkt = bmr.toStringAsFixed(2);
-    await boxProfile.put('KKT', kkt);
+    final String bmr = nilaiBmr.toStringAsFixed(2);
+    await boxProfile.put('BMR', bmr);
     Publics.controller.getProfile.value = Storages.getProfile;
     return;
   }

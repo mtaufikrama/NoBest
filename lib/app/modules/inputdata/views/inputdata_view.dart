@@ -57,7 +57,7 @@ class _InputdataViewState extends State<InputdataView> {
     return Scaffold(
       appBar: AppBar(
         title: teksLanguage(
-          'Input Data',
+          'Input Data Profile',
           style: Font.regular(),
         ),
         centerTitle: true,
@@ -141,6 +141,9 @@ class _InputdataViewState extends State<InputdataView> {
                                                 base64Encode(imageBytes);
                                             controller.imagePath.value =
                                                 base64Image;
+                                            Storages.setProfile(
+                                              image: controller.imagePath.value,
+                                            );
                                           }
                                         },
                                         icon: const Icon(Icons.filter_rounded),
@@ -169,6 +172,9 @@ class _InputdataViewState extends State<InputdataView> {
                                                 base64Encode(imageBytes);
                                             controller.imagePath.value =
                                                 base64Image;
+                                            Storages.setProfile(
+                                              image: controller.imagePath.value,
+                                            );
                                           }
                                         },
                                         icon: const Icon(
@@ -209,7 +215,7 @@ class _InputdataViewState extends State<InputdataView> {
                 ),
                 FormProfile(
                   key: keyWeight,
-                  label: 'Weight (kg) *',
+                  label: 'Weight (kg)*',
                   keyboardType: TextInputType.number,
                   controller: controller.weightController,
                 ),
@@ -233,7 +239,8 @@ class _InputdataViewState extends State<InputdataView> {
                         context: context,
                         initialDate: controller.calender.value,
                         firstDate: DateTime(1800),
-                        lastDate: DateTime.now(),
+                        lastDate: DateTime.now()
+                            .subtract(const Duration(days: 365 * 18)),
                       );
                       if (datePicker != null) {
                         controller.calender.value = datePicker;
@@ -360,7 +367,7 @@ class _InputdataViewState extends State<InputdataView> {
           } else {
             Publics.snackBarFail(
               'REQUIREMENT!',
-              'weight, height, and age are mandatory to fill in',
+              'weight, height, and age must be filled',
             );
           }
         },

@@ -19,7 +19,7 @@ class InputdataController extends GetxController {
   final genderValue = Publics.controller.getProfile.value.isMan.obs;
   final getTutorial = Publics.controller.getTutorial;
   final imagePath = ''.obs;
-  final calender = DateTime.now().obs;
+  final calender = DateTime.now().subtract(const Duration(days: 365 * 18)).obs;
 
   final gender = [
     GenderModel(true, 'Male'),

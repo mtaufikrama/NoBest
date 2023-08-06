@@ -190,7 +190,7 @@ class _ProfileViewState extends State<ProfileView> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           teksLanguage(
-                            ": ${controller.getProfile.value.isMan == true ? 'Man' : 'female'}",
+                            ": ${controller.getProfile.value.isMan == true ? 'Male' : 'female'}",
                             style: Font.regular(fontSize: 18),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -208,7 +208,7 @@ class _ProfileViewState extends State<ProfileView> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           teksLanguage(
-                            ": ${controller.getProfile.value.kkt}",
+                            ": ${controller.getProfile.value.bmr}",
                             style: Font.regular(fontSize: 18),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -264,7 +264,7 @@ class _ProfileViewState extends State<ProfileView> {
         color: Warna.primary,
         contents: [
           TargetContent(
-            align: ContentAlign.top,
+            align: ContentAlign.bottom,
             builder: (context, controller) {
               return teksLanguage(
                 "Profile photo:To display the user's photo.",
@@ -309,7 +309,7 @@ class _ProfileViewState extends State<ProfileView> {
         enableOverlayTab: true,
         contents: [
           TargetContent(
-            align: ContentAlign.top,
+            align: ContentAlign.bottom,
             builder: (context, controller) {
               return teksLanguage(
                 "Back To Home Page",

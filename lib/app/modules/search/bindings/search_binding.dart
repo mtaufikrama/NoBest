@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 
-import '../controllers/searchs_controller.dart';
+import '../controllers/search_controller.dart';
 
-class SearchsBinding extends Bindings {
+class SearchBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<SearchsController>(

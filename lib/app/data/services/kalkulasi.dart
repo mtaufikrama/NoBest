@@ -115,8 +115,8 @@ class Kalkulator {
       (size / 100) * value;
 
   //kebutuhan kalori total
-  static double kkt({required double bmr, double? pal}) =>
-      pal != null ? bmr * pal : bmr * 1.2;
+  // static double kkt({required double bmr, double? pal}) =>
+  //     pal != null ? bmr * pal : bmr * 1.2;
 
   //generate KnapSack
   static List<Foods> generateKnapSack({required List<Foods> foods}) {
@@ -147,7 +147,7 @@ class Kalkulator {
       },
     ).toList();
     final getprofile = Publics.controller.getProfile.value;
-    double totalKKT = double.parse(getprofile.kkt ?? '0') -
+    double totalKKT = double.parse(getprofile.bmr ?? '0') -
         double.parse(getprofile.kaloriPembakaran ?? '0');
     int totalPanjang = totalKKT.round();
     int jumlahKayu = kaloris.length;
@@ -186,6 +186,14 @@ class Kalkulator {
       }
     }
     return foodsGenerate;
+  }
+
+  static double get kkt {
+    double kalori =
+        double.parse(Publics.controller.getProfile.value.kaloriPembakaran!);
+    double kkt = double.parse(Publics.controller.getProfile.value.bmr!);
+    double value = kkt - kalori;
+    return value;
   }
 
   static String generateMonteCarlo(

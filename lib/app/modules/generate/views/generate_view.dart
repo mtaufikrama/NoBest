@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -31,7 +30,7 @@ class _GenerateViewState extends State<GenerateView> {
   late TutorialCoachMark tutorialCoachMark;
 
   GlobalKey keyProfile = GlobalKey();
-  GlobalKey keyDeficit = GlobalKey();
+  // GlobalKey keyDeficit = GlobalKey();
   GlobalKey keyListFood = GlobalKey();
   GlobalKey keyFloating = GlobalKey();
 
@@ -51,7 +50,7 @@ class _GenerateViewState extends State<GenerateView> {
     return Scaffold(
       appBar: AppBar(
         title: teksLanguage(
-          'Generate Food',
+          'Recommended Food',
           style: Font.regular(),
         ),
         centerTitle: true,
@@ -285,120 +284,120 @@ class _GenerateViewState extends State<GenerateView> {
                 // const SizedBox(
                 //   height: 15,
                 // ),
-                DropdownButtonFormField2(
-                  key: keyDeficit,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  isExpanded: true,
-                  hint: controller.getProfile.value.kaloriPembakaran == null
-                      ? teksLanguage(
-                          'Energy Deficit',
-                          style: Font.regular(fontSize: 14),
-                        )
-                      : ListTile(
-                          title: teksLanguage(
-                            double.parse(controller
-                                        .getProfile.value.kiloPembakaran!) <
-                                    0.0
-                                ? 'Add ${Kalkulator.kaloriPembakaran(kilo: double.parse(controller.getProfile.value.kiloPembakaran!)).abs()} kcal/day'
-                                : double.parse(controller.getProfile.value
-                                            .kiloPembakaran!) ==
-                                        0.0
-                                    ? 'No change'
-                                    : 'Subtract ${Kalkulator.kaloriPembakaran(kilo: double.parse(controller.getProfile.value.kiloPembakaran!)).abs()} kcal/day',
-                            style: Font.regular(
-                              fontSize: 14.0,
-                            ),
-                          ),
-                          subtitle: teksLanguage(
-                            double.parse(controller
-                                        .getProfile.value.kiloPembakaran!) <
-                                    0.0
-                                ? 'Weight gain of 1 kg in 4 weeks'
-                                : double.parse(controller.getProfile.value
-                                            .kiloPembakaran!) ==
-                                        0.0
-                                    ? 'No change in 4 weeks'
-                                    : 'Weight loss of ${double.parse(controller.getProfile.value.kiloPembakaran!)} kg in 4 weeks',
-                            style: Font.regular(
-                              fontSize: 13.0,
-                              color: Colors.grey,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                  items: controller.defisitKalori
-                      .map(
-                        (item) => DropdownMenuItem(
-                          value: item,
-                          child: ListTile(
-                            title: teksLanguage(
-                              item < 0.0
-                                  ? 'Add ${Kalkulator.kaloriPembakaran(kilo: item).abs()} kcal/day'
-                                  : item == 0.0
-                                      ? 'No change'
-                                      : 'Subtract ${Kalkulator.kaloriPembakaran(kilo: item).abs()} kcal/day',
-                              style: Font.regular(
-                                fontSize: 14.0,
-                              ),
-                            ),
-                            subtitle: teksLanguage(
-                              item < 0.0
-                                  ? 'Weight gain of 1 kg in 4 weeks'
-                                  : item == 0.0
-                                      ? 'No change in 4 weeks'
-                                      : 'Weight loss of $item kg in 4 weeks',
-                              style: Font.regular(
-                                fontSize: 13.0,
-                                color: Colors.grey,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: item == Kalkulator.nilaiKiloPembakaran()
-                                ? const ImageIcon(
-                                    AssetImage(
-                                      IconApp.recommend,
-                                    ),
-                                  )
-                                : null,
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) async {
-                    await Storages.setProfile(
-                      height: controller.getProfile.value.height ?? '',
-                      weight: controller.getProfile.value.weight ?? '',
-                      age: controller.getProfile.value.age ?? '',
-                      isMan: controller.getProfile.value.isMan ?? false,
-                      kiloPembakaran: value.toString(),
-                    );
-                  },
-                  buttonStyleData: const ButtonStyleData(
-                    height: 60,
-                    padding: EdgeInsets.only(left: 0, right: 10),
-                  ),
-                  iconStyleData: const IconStyleData(
-                    icon: ImageIcon(AssetImage(IconApp.arrowDown)),
-                    iconSize: 20,
-                    openMenuIcon: ImageIcon(
-                      AssetImage(IconApp.arrowUp),
-                      color: Warna.primary,
-                    ),
-                  ),
-                  dropdownStyleData: DropdownStyleData(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
+                // DropdownButtonFormField2(
+                //   key: keyDeficit,
+                //   decoration: InputDecoration(
+                //     isDense: true,
+                //     contentPadding: EdgeInsets.zero,
+                //     border: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(25),
+                //     ),
+                //   ),
+                //   isExpanded: true,
+                //   hint: controller.getProfile.value.kaloriPembakaran == null
+                //       ? teksLanguage(
+                //           'Energy Deficit',
+                //           style: Font.regular(fontSize: 14),
+                //         )
+                //       : ListTile(
+                //           title: teksLanguage(
+                //             double.parse(controller
+                //                         .getProfile.value.kiloPembakaran!) <
+                //                     0.0
+                //                 ? 'Add ${Kalkulator.kaloriPembakaran(kilo: double.parse(controller.getProfile.value.kiloPembakaran!)).abs()} kcal/day'
+                //                 : double.parse(controller.getProfile.value
+                //                             .kiloPembakaran!) ==
+                //                         0.0
+                //                     ? 'No change'
+                //                     : 'Subtract ${Kalkulator.kaloriPembakaran(kilo: double.parse(controller.getProfile.value.kiloPembakaran!)).abs()} kcal/day',
+                //             style: Font.regular(
+                //               fontSize: 14.0,
+                //             ),
+                //           ),
+                //           subtitle: teksLanguage(
+                //             double.parse(controller
+                //                         .getProfile.value.kiloPembakaran!) <
+                //                     0.0
+                //                 ? 'Weight gain of 1 kg in 4 weeks'
+                //                 : double.parse(controller.getProfile.value
+                //                             .kiloPembakaran!) ==
+                //                         0.0
+                //                     ? 'No change in 4 weeks'
+                //                     : 'Weight loss of ${double.parse(controller.getProfile.value.kiloPembakaran!)} kg in 4 weeks',
+                //             style: Font.regular(
+                //               fontSize: 13.0,
+                //               color: Colors.grey,
+                //             ),
+                //             maxLines: 1,
+                //             overflow: TextOverflow.ellipsis,
+                //           ),
+                //         ),
+                //   items: controller.defisitKalori
+                //       .map(
+                //         (item) => DropdownMenuItem(
+                //           value: item,
+                //           child: ListTile(
+                //             title: teksLanguage(
+                //               item < 0.0
+                //                   ? 'Add ${Kalkulator.kaloriPembakaran(kilo: item).abs()} kcal/day'
+                //                   : item == 0.0
+                //                       ? 'No change'
+                //                       : 'Subtract ${Kalkulator.kaloriPembakaran(kilo: item).abs()} kcal/day',
+                //               style: Font.regular(
+                //                 fontSize: 14.0,
+                //               ),
+                //             ),
+                //             subtitle: teksLanguage(
+                //               item < 0.0
+                //                   ? 'Weight gain of 1 kg in 4 weeks'
+                //                   : item == 0.0
+                //                       ? 'No change in 4 weeks'
+                //                       : 'Weight loss of $item kg in 4 weeks',
+                //               style: Font.regular(
+                //                 fontSize: 13.0,
+                //                 color: Colors.grey,
+                //               ),
+                //               maxLines: 1,
+                //               overflow: TextOverflow.ellipsis,
+                //             ),
+                //             trailing: item == Kalkulator.nilaiKiloPembakaran()
+                //                 ? const ImageIcon(
+                //                     AssetImage(
+                //                       IconApp.recommend,
+                //                     ),
+                //                   )
+                //                 : null,
+                //           ),
+                //         ),
+                //       )
+                //       .toList(),
+                //   onChanged: (value) async {
+                //     await Storages.setProfile(
+                //       height: controller.getProfile.value.height ?? '',
+                //       weight: controller.getProfile.value.weight ?? '',
+                //       age: controller.getProfile.value.age ?? '',
+                //       isMan: controller.getProfile.value.isMan ?? false,
+                //       kiloPembakaran: value.toString(),
+                //     );
+                //   },
+                //   buttonStyleData: const ButtonStyleData(
+                //     height: 60,
+                //     padding: EdgeInsets.only(left: 0, right: 10),
+                //   ),
+                //   iconStyleData: const IconStyleData(
+                //     icon: ImageIcon(AssetImage(IconApp.arrowDown)),
+                //     iconSize: 20,
+                //     openMenuIcon: ImageIcon(
+                //       AssetImage(IconApp.arrowUp),
+                //       color: Warna.primary,
+                //     ),
+                //   ),
+                //   dropdownStyleData: DropdownStyleData(
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(15),
+                //     ),
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Obx(
@@ -522,7 +521,7 @@ class _GenerateViewState extends State<GenerateView> {
           } else {
             Publics.snackBarFail(
               'Fail to Process',
-              '',
+              'Profile and Food List must be filled',
             );
           }
         },
@@ -565,7 +564,7 @@ class _GenerateViewState extends State<GenerateView> {
             align: ContentAlign.bottom,
             builder: (context, controller) {
               return teksLanguage(
-                "Titulo lorem ipsum",
+                "Profile:\nYour profile data must accurately reflect your current information so that we can provide recommendations based on your calorie needs.",
                 style: Font.regular(
                   color: Colors.white,
                 ),
@@ -575,29 +574,29 @@ class _GenerateViewState extends State<GenerateView> {
         ],
       ),
     );
-    targets.add(
-      TargetFocus(
-        shape: ShapeLightFocus.RRect,
-        radius: 0,
-        identify: "Deficit",
-        keyTarget: keyDeficit,
-        color: Warna.primary,
-        alignSkip: Alignment.topRight,
-        contents: [
-          TargetContent(
-            align: ContentAlign.top,
-            builder: (context, controller) {
-              return teksLanguage(
-                "Enter name:\nEntering a name is not mandatory, but it will be displayed on the profile page.",
-                style: Font.regular(
-                  color: Colors.white,
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
+    // targets.add(
+    //   TargetFocus(
+    //     shape: ShapeLightFocus.RRect,
+    //     radius: 0,
+    //     identify: "Deficit",
+    //     keyTarget: keyDeficit,
+    //     color: Warna.primary,
+    //     alignSkip: Alignment.topRight,
+    //     contents: [
+    //       TargetContent(
+    //         align: ContentAlign.top,
+    //         builder: (context, controller) {
+    //           return teksLanguage(
+    //             "Enter name:\nEntering a name is not mandatory, but it will be displayed on the profile page.",
+    //             style: Font.regular(
+    //               color: Colors.white,
+    //             ),
+    //           );
+    //         },
+    //       ),
+    //     ],
+    //   ),
+    // );
     targets.add(
       TargetFocus(
         shape: ShapeLightFocus.RRect,

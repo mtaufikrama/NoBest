@@ -93,86 +93,103 @@ class FoodView extends GetView<FoodController> {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Row(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  teksLanguage(
-                                    'Publication Date',
-                                    style: Font.regular(),
-                                  ),
-                                  teksLanguage(
-                                    'Brand Name',
-                                    style: Font.regular(),
-                                  ),
-                                  teksLanguage(
-                                    'Brand Owner',
-                                    style: Font.regular(),
-                                  ),
-                                  teksLanguage(
-                                    'Branded Food Category',
-                                    style: Font.regular(),
-                                  ),
-                                  teksLanguage(
-                                    'Data Source',
-                                    style: Font.regular(),
-                                  ),
-                                  teksLanguage(
-                                    'Serving Size',
-                                    style: Font.regular(),
-                                  ),
-                                  teksLanguage(
-                                    'Data Type',
-                                    style: Font.regular(),
-                                  ),
-                                  Text(
-                                    'Ingredients',
-                                    style: Font.regular(),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      ": ${data.publicationDate ?? '-'}",
-                                      style: Font.regular(),
-                                    ),
-                                    Text(
-                                      ": ${data.brandName ?? '-'}",
-                                      style: Font.regular(),
-                                    ),
-                                    Text(
-                                      ": ${data.brandOwner ?? '-'}",
-                                      style: Font.regular(),
-                                    ),
-                                    Text(
-                                      ": ${data.brandedFoodCategory ?? '-'}",
-                                      style: Font.regular(),
-                                    ),
-                                    Text(
-                                      ": ${data.dataSource ?? '-'}",
-                                      style: Font.regular(),
-                                    ),
-                                    Text(
-                                      ": ${data.servingSize ?? 0}",
-                                      style: Font.regular(),
-                                    ),
-                                    Text(
-                                      ": ${data.dataType ?? '-'}",
-                                      style: Font.regular(),
-                                    ),
-                                    teksLanguage(
-                                      ": ${data.ingredients ?? '-'}",
-                                      style: Font.regular(),
-                                    ),
-                                  ],
+                              teksLanguage(
+                                'Publication Date :',
+                                style: Font.regular(
+                                  color: Warna.baseWhite.withOpacity(0.8),
                                 ),
+                              ),
+                              Text(
+                                data.publicationDate ?? '-',
+                                style: Font.regular(),
+                                textAlign: TextAlign.justify,
+                              ),
+                              const SizedBox(height: 5),
+                              teksLanguage(
+                                'Brand Name :',
+                                style: Font.regular(
+                                  color: Warna.baseWhite.withOpacity(0.8),
+                                ),
+                              ),
+                              Text(
+                                data.brandName ?? '-',
+                                style: Font.regular(),
+                                textAlign: TextAlign.justify,
+                              ),
+                              const SizedBox(height: 5),
+                              teksLanguage(
+                                'Brand Owner :',
+                                style: Font.regular(
+                                  color: Warna.baseWhite.withOpacity(0.8),
+                                ),
+                              ),
+                              Text(
+                                data.brandOwner ?? '-',
+                                style: Font.regular(),
+                                textAlign: TextAlign.justify,
+                              ),
+                              const SizedBox(height: 5),
+                              teksLanguage(
+                                'Branded Food Category :',
+                                style: Font.regular(
+                                  color: Warna.baseWhite.withOpacity(0.8),
+                                ),
+                              ),
+                              Text(
+                                data.brandedFoodCategory ?? '-',
+                                style: Font.regular(),
+                                textAlign: TextAlign.justify,
+                              ),
+                              const SizedBox(height: 5),
+                              teksLanguage(
+                                'Data Source :',
+                                style: Font.regular(
+                                  color: Warna.baseWhite.withOpacity(0.8),
+                                ),
+                              ),
+                              Text(
+                                data.dataSource ?? '-',
+                                style: Font.regular(),
+                                textAlign: TextAlign.justify,
+                              ),
+                              const SizedBox(height: 5),
+                              teksLanguage(
+                                'Serving Size :',
+                                style: Font.regular(
+                                  color: Warna.baseWhite.withOpacity(0.8),
+                                ),
+                              ),
+                              Text(
+                                "${data.servingSize ?? 0}",
+                                style: Font.regular(),
+                                textAlign: TextAlign.justify,
+                              ),
+                              const SizedBox(height: 5),
+                              teksLanguage(
+                                'Data Type :',
+                                style: Font.regular(
+                                  color: Warna.baseWhite.withOpacity(0.8),
+                                ),
+                              ),
+                              Text(
+                                data.dataType ?? '-',
+                                style: Font.regular(),
+                                textAlign: TextAlign.justify,
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                'Ingredients :',
+                                style: Font.regular(
+                                  color: Warna.baseWhite.withOpacity(0.8),
+                                ),
+                              ),
+                              teksLanguage(
+                                data.ingredients ?? '-',
+                                style: Font.regular(),
+                                textAlign: TextAlign.justify,
                               ),
                             ],
                           ),
@@ -295,11 +312,14 @@ class FoodView extends GetView<FoodController> {
                                           dense: true,
                                           title: teksLanguage(
                                             e.nutrient!.name!,
-                                            style: Font.regular(fontSize: 15),
+                                            style: Font.regular(
+                                              color: Warna.baseWhite
+                                                  .withOpacity(0.8),
+                                            ),
                                           ),
                                           subtitle: Text(
                                             '${Kalkulator.porsi(size: controller.servingSize.value.toDouble(), value: (e.amount ?? 0)).toStringAsFixed(2)} ${e.nutrient!.unitName!}',
-                                            style: Font.regular(),
+                                            style: Font.regular(fontSize: 15),
                                           ),
                                         ),
                                       )
