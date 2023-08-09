@@ -15,15 +15,7 @@ class Storages {
   static const searchName = 'search';
   static const bahasaName = 'bahasa';
   static const tutorialName = 'tutorial';
-  static const listStoragesName = [
-    profileName,
-    recentlyName,
-    generateName,
-    dailyName,
-    searchName,
-    bahasaName,
-    tutorialName,
-  ];
+
   static final boxProfile = Hive.box(profileName);
   static final boxRecentlyMenu = Hive.box(recentlyName);
   static final boxGenerateMenu = Hive.box(generateName);
@@ -66,26 +58,6 @@ class Storages {
   static TutorialModel get getTutorial =>
       TutorialModel.fromJson(boxTutorial.isNotEmpty ? boxTutorial.toMap() : {});
 
-  // static Future<void> setDaily(
-  //     {required List<Foods> foods, required Profile profile}) async {
-  //   String time = Kalkulator.timeNow;
-  //   List<Map<String, dynamic>> listFood = foods.map((e) => e.toJson()).toList();
-  //   Map<String, dynamic> profileValue = profile.toJson();
-  //   Map<String, dynamic> value = {
-  //     'profile': profileValue,
-  //     'foods': listFood,
-  //   };
-  //   await boxDailyMenu.put(time, value);
-  //   Publics.controller.getDaily.value = Storages.getDaily;
-  //   return;
-  // }
-
-  // static Map<dynamic, dynamic> get getDaily {
-  //   Map<dynamic, dynamic> daily =
-  //       boxDailyMenu.isNotEmpty ? boxDailyMenu.toMap() : {};
-  //   return daily;
-  // }
-
   static Future<void> setGenerate({required List<Foods> foods}) async {
     await boxGenerateMenu.clear();
     String time = Kalkulator.timeNow;
@@ -122,9 +94,9 @@ class Storages {
     await boxProfile.put('image', image ?? profile.image);
     await boxProfile.put('name', name ?? profile.name);
     await boxProfile.put('height', height ?? profile.height);
-    await boxProfile.put('gender', isMan ?? profile.isMan ?? false);
-    await boxProfile.put('weight', weight ?? profile.weight ?? '0');
-    await boxProfile.put('age', age ?? profile.age ?? '0');
+    await boxProfile.put('gender', isMan ?? profile.isMan);
+    await boxProfile.put('weight', weight ?? profile.weight);
+    await boxProfile.put('age', age ?? profile.age);
     await boxProfile.put('IMT', imt);
     double nilaiKalori = Kalkulator.nilaiKiloPembakaran(
       kategoriIMT: Kalkulator.kategoriIMT(

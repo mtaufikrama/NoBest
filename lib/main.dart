@@ -9,20 +9,18 @@ import 'app/routes/app_pages.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox(Storages.dailyName);
   await Hive.openBox(Storages.generateName);
   await Hive.openBox(Storages.profileName);
   await Hive.openBox(Storages.recentlyName);
   await Hive.openBox(Storages.searchName);
   await Hive.openBox(Storages.bahasaName);
   await Hive.openBox(Storages.tutorialName);
-  // await Storages.boxBahasa.clear();
-  // await Storages.boxProfile.clear();
-  // await Storages.boxSearch.clear();
-  // await Storages.boxTutorial.clear();
-  // await Storages.boxGenerateMenu.clear();
-  // await Storages.boxDailyMenu.clear();
-  // await Storages.boxRecentlyMenu.clear();
+  await Storages.boxBahasa.clear();
+  await Storages.boxGenerateMenu.clear();
+  await Storages.boxProfile.clear();
+  await Storages.boxRecentlyMenu.clear();
+  await Storages.boxSearch.clear();
+  await Storages.boxTutorial.clear();
   runApp(const MyApp());
 }
 

@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:nobes/app/data/model/usda_fdcid.dart';
-import 'package:nobes/app/data/model/usda_list.dart';
 import 'package:nobes/app/data/services/query_parameter.dart';
 
 import '../model/usda_search.dart';
@@ -35,34 +34,6 @@ class API {
       obj = USDASearch.fromJson(response.data);
     } else {
       obj = USDASearch();
-    }
-    return obj;
-  }
-
-  static Future<List<USDAList>> getList(
-      {List<String>? dataType,
-      String? brandOwner,
-      String? sortOrder,
-      String? sortBy,
-      int? pageSize}) async {
-    final response =
-        await Dio().get("https://api.nal.usda.gov/fdc/v1/foods/list",
-            options: Options(
-              contentType: 'application/json',
-            ),
-            queryParameters: {
-          'api_key': apiKey,
-          'dataType': dataType ?? '',
-          'brandOwner': brandOwner ?? '',
-          'sortOrder': sortOrder ?? '',
-          'pageSize': pageSize ?? '',
-          'sortBy': sortBy ?? '',
-        });
-    List<USDAList> obj;
-    if (response.statusCode == 200) {
-      obj = (response.data as List).map((e) => USDAList.fromJson(e)).toList();
-    } else {
-      obj = [USDAList()];
     }
     return obj;
   }

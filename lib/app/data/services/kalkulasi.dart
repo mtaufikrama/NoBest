@@ -147,17 +147,17 @@ class Kalkulator {
       },
     ).toList();
     final getprofile = Publics.controller.getProfile.value;
-    double totalKKT = double.parse(getprofile.bmr ?? '0') -
-        double.parse(getprofile.kaloriPembakaran ?? '0');
-    int totalPanjang = totalKKT.round();
-    int jumlahKayu = kaloris.length;
-    List<int> panjangTerpilih = List.filled(jumlahKayu, 0);
+    int totalKKT = (double.parse(getprofile.bmr ?? '0') -
+            double.parse(getprofile.kaloriPembakaran ?? '0'))
+        .round();
+    int jumlahMakanan = kaloris.length;
+    List<int> panjangTerpilih = List.filled(jumlahMakanan, 0);
     List<List<int>> tabelMaksimal =
-        List.generate(jumlahKayu + 1, (_) => List.filled(totalPanjang + 1, 0));
+        List.generate(jumlahMakanan + 1, (_) => List.filled(totalKKT + 1, 0));
 
     // Mengisi tabel dengan nilai maksimal
-    for (int i = 1; i <= jumlahKayu; i++) {
-      for (int j = 1; j <= totalPanjang; j++) {
+    for (int i = 1; i <= jumlahMakanan; i++) {
+      for (int j = 1; j <= totalKKT; j++) {
         if (kaloris[i - 1] <= j) {
           tabelMaksimal[i][j] = max(tabelMaksimal[i - 1][j],
               kaloris[i - 1] + tabelMaksimal[i - 1][j - kaloris[i - 1]]);
@@ -168,8 +168,8 @@ class Kalkulator {
     }
 
     // Mencari kayu yang terpilih
-    int i = jumlahKayu;
-    int j = totalPanjang;
+    int i = jumlahMakanan;
+    int j = totalKKT;
     while (i > 0 && j > 0) {
       if (tabelMaksimal[i][j] != tabelMaksimal[i - 1][j]) {
         panjangTerpilih[i - 1] = 1;
@@ -180,7 +180,7 @@ class Kalkulator {
 
     // Menampilkan kayu yang terpilih
     List<Foods> foodsGenerate = [];
-    for (int i = 0; i < jumlahKayu; i++) {
+    for (int i = 0; i < jumlahMakanan; i++) {
       if (panjangTerpilih[i] == 1) {
         foodsGenerate.add(foods[i]);
       }
