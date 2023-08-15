@@ -348,10 +348,7 @@ class _InputdataViewState extends State<InputdataView> {
               controller.genderValue.value != null) {
             if (int.parse(controller.ageController.text) >= 18) {
               await Storages.setProfile(
-                isMan: controller.genderValue.value!,
-                image: controller.imagePath.value.isNotEmpty
-                    ? controller.imagePath.value
-                    : null,
+                isMan: controller.genderValue.value,
                 name: controller.nameController.text,
                 height: controller.heightController.text,
                 weight: controller.weightController.text,
@@ -367,7 +364,7 @@ class _InputdataViewState extends State<InputdataView> {
           } else {
             Publics.snackBarFail(
               'REQUIREMENT!',
-              'weight, height, and age must be filled',
+              'weight, height, gender and age must be filled',
             );
           }
         },
