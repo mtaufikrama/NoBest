@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -12,11 +14,36 @@ import 'package:nobes/app/data/services/translate.dart';
 import 'package:nobes/app/data/widget/card_food.dart';
 import 'package:nobes/app/data/widget/refresh_page.dart';
 import 'package:nobes/app/routes/app_pages.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
+import '../../../data/model/tutorial.dart';
 import '../controllers/generate_controller.dart';
 
-class GenerateView extends GetView<GenerateController> {
+class GenerateView extends StatefulWidget {
   const GenerateView({super.key});
+
+  @override
+  State<GenerateView> createState() => _GenerateViewState();
+}
+
+class _GenerateViewState extends State<GenerateView> {
+  late TutorialCoachMark tutorialCoachMark;
+
+  GlobalKey keyProfile = GlobalKey();
+  // GlobalKey keyDeficit = GlobalKey();
+  GlobalKey keyListFood = GlobalKey();
+  GlobalKey keyFloating = GlobalKey();
+
+  final controller = Get.put(GenerateController());
+
+  @override
+  void initState() {
+    if (controller.getTutorial.value.generateFood != true) {
+      createTutorial();
+      Future.delayed(Duration.zero, showTutorial);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +68,7 @@ class GenerateView extends GetView<GenerateController> {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Obx(
                     () => Card(
+                      key: keyProfile,
                       color: Warna.baseBlack,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -374,6 +402,7 @@ class GenerateView extends GetView<GenerateController> {
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Obx(
                     () => Card(
+                      key: keyListFood,
                       color: Warna.baseBlack,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -470,6 +499,7 @@ class GenerateView extends GetView<GenerateController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        key: keyFloating,
         child: const ImageIcon(AssetImage(IconApp.send)),
         onPressed: () async {
           if (controller.getProfile.value.height != null &&
@@ -497,5 +527,121 @@ class GenerateView extends GetView<GenerateController> {
         },
       ),
     );
+  }
+
+  void showTutorial() {
+    tutorialCoachMark.show(context: context);
+  }
+
+  void createTutorial() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: _createTargets(),
+      textStyleSkip: Font.regular(),
+      textSkip: 'SKIP >>',
+      paddingFocus: 10,
+      opacityShadow: 0.5,
+      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+      onFinish: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(generateFood: true));
+      },
+      onSkip: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(generateFood: true));
+      },
+    );
+  }
+
+  List<TargetFocus> _createTargets() {
+    List<TargetFocus> targets = [];
+    targets.add(
+      TargetFocus(
+        identify: "Profile",
+        shape: ShapeLightFocus.RRect,
+        keyTarget: keyProfile,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Profile:\nYour profile data must accurately reflect your current information so that we can provide recommendations based on your calorie needs.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    // targets.add(
+    //   TargetFocus(
+    //     shape: ShapeLightFocus.RRect,
+    //     radius: 0,
+    //     identify: "Deficit",
+    //     keyTarget: keyDeficit,
+    //     color: Warna.primary,
+    //     alignSkip: Alignment.topRight,
+    //     contents: [
+    //       TargetContent(
+    //         align: ContentAlign.top,
+    //         builder: (context, controller) {
+    //           return teksLanguage(
+    //             "Enter name:\nEntering a name is not mandatory, but it will be displayed on the profile page.",
+    //             style: Font.regular(
+    //               color: Colors.white,
+    //             ),
+    //           );
+    //         },
+    //       ),
+    //     ],
+    //   ),
+    // );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        radius: 0,
+        identify: "List Food",
+        keyTarget: keyListFood,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Enter weight:\nEntering weight is mandatory as it is used to calculate the user's BMI (Body Mass Index) and BMR (Basal Metabolic Rate).",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        radius: 0,
+        identify: "Floating",
+        keyTarget: keyFloating,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Send button:\nThe data inputted above (profile data, calorie deficit, and food list) will be calculated to determine the appropriate food intake based on the body's calorie requirements, considering the BMR subtracted by your calorie deficit.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    return targets;
   }
 }

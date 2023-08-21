@@ -53,7 +53,7 @@ class _SearchViewState extends State<SearchView> {
       ),
       body: RefreshPage(
         routes: Routes.SEARCH,
-        child: ListView(
+        child: Column(
           children: [
             const SizedBox(
               height: 10,
@@ -61,25 +61,33 @@ class _SearchViewState extends State<SearchView> {
             Row(
               children: [
                 Expanded(
-                  child: TextFormField(
-                    key: keySearch,
-                    autofocus: true,
-                    controller: controller.searchController,
-                    decoration: InputDecoration(
-                      label: teksLanguage(
-                        "Search Food",
-                        style: Font.regular(
-                          color: Colors.grey,
-                        ),
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        key: keySearch,
+                        width: Get.width,
+                        height: 100,
                       ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(
-                          color: Warna.primary,
+                      TextFormField(
+                        autofocus: true,
+                        controller: controller.searchController,
+                        decoration: InputDecoration(
+                          label: teksLanguage(
+                            "Search Food",
+                            style: Font.regular(
+                              color: Colors.grey,
+                            ),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: const BorderSide(
+                              color: Warna.primary,
+                            ),
+                          ),
                         ),
+                        onEditingComplete: controller.onSubmit,
                       ),
-                    ),
-                    onEditingComplete: controller.onSubmit,
+                    ],
                   ),
                 ),
                 IconButton(
@@ -93,35 +101,35 @@ class _SearchViewState extends State<SearchView> {
                 ),
               ],
             ),
-            Obx(() {
-              return ListView.builder(
-                key: keyHistory,
-                itemCount: controller.getSearch.length,
-                shrinkWrap: true,
-                reverse: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () async {
-                      await controller.onSearch(controller.getSearch[index]);
-                    },
-                    child: Card(
-                      child: Container(
-                        height: 50,
-                        alignment: Alignment.center,
-                        child: Text(
-                          controller.getSearch[index].toString(),
-                          style: Font.regular(
-                            fontSize: 15.0,
-                            color: Warna.baseWhite,
+            Expanded(
+              key: keyHistory,
+              child: Obx(() {
+                return ListView.builder(
+                  itemCount: controller.getSearch.length,
+                  reverse: true,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () async {
+                        await controller.onSearch(controller.getSearch[index]);
+                      },
+                      child: Card(
+                        child: Container(
+                          height: 50,
+                          alignment: Alignment.center,
+                          child: Text(
+                            controller.getSearch[index].toString(),
+                            style: Font.regular(
+                              fontSize: 15.0,
+                              color: Warna.baseWhite,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              );
-            }),
+                    );
+                  },
+                );
+              }),
+            ),
           ],
         ),
       ),

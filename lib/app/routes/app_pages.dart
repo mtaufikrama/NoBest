@@ -1,7 +1,4 @@
 import 'package:get/get.dart';
-
-import '../modules/finishgenerate/bindings/finishgenerate_binding.dart';
-import '../modules/finishgenerate/views/finishgenerate_view.dart';
 import '../modules/food/bindings/food_binding.dart';
 import '../modules/food/views/food_view.dart';
 import '../modules/generate/bindings/generate_binding.dart';
@@ -76,11 +73,6 @@ class AppPages {
       name: _Paths.IMAGES,
       page: () => const ImagesView(),
       binding: ImagesBinding(),
-    ),
-    GetPage(
-      name: _Paths.FINISHGENERATE,
-      page: () => const FinishgenerateView(),
-      binding: FinishgenerateBinding(),
     ),
     GetPage(
       name: _Paths.SPLASH,

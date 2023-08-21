@@ -5,5 +5,5 @@ class ListfoodController extends GetxController {
   //TODO: Implement ListfoodController
 
   final query = Get.parameters['query'];
-  final getRecently = Publics.controller.getRecently;
+  final getRecently = Publics.controller.getRecommend;
 }

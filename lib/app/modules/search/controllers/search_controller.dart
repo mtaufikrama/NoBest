@@ -12,7 +12,7 @@ import 'package:search_page/search_page.dart';
 class SearchsController extends GetxController {
   //TODO: Implement SearchController
   final searchController = TextEditingController();
-  final getSearch = Publics.controller.getSearch;
+  final getSearch = Publics.controller.getHistory;
   final getBahasa = Publics.controller.getBahasa;
   final getTutorial = Publics.controller.getTutorial;
 
@@ -99,11 +99,11 @@ class SearchsController extends GetxController {
 
   void onSubmit() async {
     if (searchController.text.isNotEmpty) {
-      await Storages.setSearch(
+      await Storages.setHistory(
         query: searchController.value.text,
       );
-      getSearch.value = Storages.getSearch;
-      await onSearch(searchController.value.text);
+      getSearch.value = Storages.getHistory;
+      await onSearch(searchController.text);
     }
   }
 }

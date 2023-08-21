@@ -13,7 +13,7 @@ class InputdataController extends GetxController {
       TextEditingController(text: Publics.controller.getProfile.value.weight);
   TextEditingController heightController =
       TextEditingController(text: Publics.controller.getProfile.value.height);
-  TextEditingController ageController =
+  TextEditingController dobController =
       TextEditingController(text: Publics.controller.getProfile.value.age);
   Rx<Profile> getProfile = Publics.controller.getProfile;
   final genderValue = Publics.controller.getProfile.value.isMan.obs;

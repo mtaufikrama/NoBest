@@ -6,7 +6,7 @@ class GenerateController extends GetxController {
   //TODO: Implement GenerateController
 
   final getProfile = Publics.controller.getProfile;
-  final getRecently = Publics.controller.getRecently;
+  final getRecently = Publics.controller.getListFood;
   final getTutorial = Publics.controller.getTutorial;
   final pal = [
     KategoriPAL.tidakPernah,

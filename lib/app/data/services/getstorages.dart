@@ -9,29 +9,36 @@ import '../model/tutorial.dart';
 
 class Storages {
   static const profileName = 'profile';
-  static const recentlyName = 'recently menu';
-  static const generateName = 'generate menu';
-  static const dailyName = 'daily menu';
-  static const searchName = 'search';
+  static const listName = 'list food';
+  static const recommendName = 'recommend food';
+  static const historyName = 'history';
   static const bahasaName = 'bahasa';
   static const tutorialName = 'tutorial';
 
   static final boxProfile = Hive.box(profileName);
-  static final boxRecentlyMenu = Hive.box(recentlyName);
-  static final boxGenerateMenu = Hive.box(generateName);
-  static final boxDailyMenu = Hive.box(dailyName);
-  static final boxSearch = Hive.box(searchName);
+  static final boxListFood = Hive.box(listName);
+  static final boxRecommendFood = Hive.box(recommendName);
+  static final boxHistory = Hive.box(historyName);
   static final boxBahasa = Hive.box(bahasaName);
   static final boxTutorial = Hive.box(tutorialName);
 
-  static Future<void> setRecently({required Foods foods}) async {
-    await boxRecentlyMenu.add(foods.toJson());
-    Publics.controller.getRecently.value = Storages.getRecently;
+  static Future<void> setListFood({required Foods foods}) async {
+    await boxListFood.add(foods.toJson());
+    Publics.controller.getListFood.value = Storages.getListFood;
     return;
   }
 
-  static List get getRecently {
-    List recently = boxRecentlyMenu.values.toList();
+  static Future<void> deleteListFood({required Foods foods}) async {
+    final listfood = Storages.getListFood;
+    listfood.remove(foods);
+    await boxListFood.clear();
+    await boxListFood.addAll(listfood);
+    Publics.controller.getListFood.value = Storages.getListFood;
+    return;
+  }
+
+  static List get getListFood {
+    List recently = boxListFood.values.toList();
     return recently;
   }
 
@@ -58,19 +65,19 @@ class Storages {
   static TutorialModel get getTutorial =>
       TutorialModel.fromJson(boxTutorial.isNotEmpty ? boxTutorial.toMap() : {});
 
-  static Future<void> setGenerate({required List<Foods> foods}) async {
-    await boxGenerateMenu.clear();
+  static Future<void> setRecommend({required List<Foods> foods}) async {
+    await boxRecommendFood.clear();
     String time = Kalkulator.timeNow;
     List<Map<dynamic, dynamic>> listFood =
         foods.map((e) => e.toJson()).toList();
-    await boxGenerateMenu.put(time, listFood);
-    Publics.controller.getGenerate.value = Storages.getGenerate;
+    await boxRecommendFood.put(time, listFood);
+    Publics.controller.getRecommend.value = Storages.getRecommend;
     return;
   }
 
-  static Map<dynamic, dynamic> get getGenerate {
+  static Map<dynamic, dynamic> get getRecommend {
     Map<dynamic, dynamic> generate =
-        boxGenerateMenu.isNotEmpty ? boxGenerateMenu.toMap() : {};
+        boxRecommendFood.isNotEmpty ? boxRecommendFood.toMap() : {};
     return generate;
   }
 
@@ -81,7 +88,6 @@ class Storages {
     String? weight,
     String? age,
     bool? isMan,
-    String? pal,
     String? kaloriPembakaran,
     String? kiloPembakaran,
   }) async {
@@ -134,16 +140,16 @@ class Storages {
   static Profile get getProfile =>
       Profile.fromJson(boxProfile.isNotEmpty ? boxProfile.toMap() : {});
 
-  static Future<void> setSearch({required String query}) async {
-    List<dynamic> listquery = Storages.getSearch;
+  static Future<void> setHistory({required String query}) async {
+    List<dynamic> listquery = Storages.getHistory;
     if (listquery.contains(query) == false) {
-      await boxSearch.add(query);
+      await boxHistory.add(query);
     }
-    Publics.controller.getSearch.value = Storages.getSearch;
+    Publics.controller.getHistory.value = Storages.getHistory;
   }
 
-  static List<dynamic> get getSearch =>
-      boxSearch.isNotEmpty ? boxSearch.values.toList() : [];
+  static List<dynamic> get getHistory =>
+      boxHistory.isNotEmpty ? boxHistory.values.toList() : [];
 
   static Future<void> setBahasa({required String language}) async {
     await boxBahasa.put('bahasa', language);

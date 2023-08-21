@@ -7,7 +7,7 @@ import '../../../data/services/kalkulasi.dart';
 class HomeController extends GetxController {
   //TODO: Implement HomeController
   final getProfile = Publics.controller.getProfile;
-  final getGenerate = Publics.controller.getGenerate;
+  final getGenerate = Publics.controller.getRecommend;
   final getBahasa = Publics.controller.getBahasa;
   final getTutorial = Publics.controller.getTutorial;
 

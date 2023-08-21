@@ -14,78 +14,74 @@ class AddFood extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final foodList = Publics.controller.getRecently
+    final foodList = Publics.controller.getListFood
         .map((element) => Foods.fromJson(element).fdcId ?? 0)
         .toList();
     controller.text = (foods.servingSize ?? 0).toInt().toString();
-    return foodList.contains(foods.fdcId ?? 0) != true ? IconButton(
-        icon: const ImageIcon(
-          AssetImage(
-            IconApp.add,
-          ),
-          color: Warna.primary,
-          size: 20.0,
-        ),
-        onPressed: () {
-          Get.defaultDialog(
-            title: 'Serving Size',
-            onConfirm: () async {
-              if (controller.text.isNotEmpty) {
-                foods.servingSize = double.parse(controller.text);
-                await Storages.setRecently(foods: foods);
-                Get.back();
-                Publics.snackBarSuccess(
-                  'Successfully Added to the Food List',
-                  foods.description!,
-                );
-              } else {
-                Publics.snackBarFail('Fail To Input Serving Size',
-                    'serving size must be filled.');
-              }
-            },
-            textConfirm: 'OK',
-            content: FormProfile(
-              label:
-                  'Serving Size  ${foods.servingSizeUnit != null ? '(${foods.servingSizeUnit})' : ''}*',
-              controller: controller,
-              keyboardType: TextInputType.number,
-              autofocus: true,
+    return foodList.contains(foods.fdcId ?? 0) != true
+        ? IconButton(
+            icon: const ImageIcon(
+              AssetImage(
+                IconApp.add,
+              ),
+              color: Warna.primary,
+              size: 20.0,
             ),
-          );
-        }) : IconButton(
-        icon: const ImageIcon(
-          AssetImage(
-            IconApp.close,
-          ),
-          color: Colors.red,
-          size: 20.0,
-        ),
-        onPressed: () {
-          Get.defaultDialog(
-            title: 'Serving Size',
-            onConfirm: () async {
-              if (controller.text.isNotEmpty) {
-                foods.servingSize = double.parse(controller.text);
-                await Storages.setRecently(foods: foods);
-                Get.back();
-                Publics.snackBarSuccess(
-                  'Successfully Added to the Food List',
-                  foods.description!,
-                );
-              } else {
-                Publics.snackBarFail('Fail To Input Serving Size',
-                    'serving size must be filled.');
-              }
-            },
-            textConfirm: 'OK',
-            content: FormProfile(
-              label:
-                  'Serving Size  ${foods.servingSizeUnit != null ? '(${foods.servingSizeUnit})' : ''}*',
-              controller: controller,
-              keyboardType: TextInputType.number,
-              autofocus: true,
+            onPressed: () {
+              Get.defaultDialog(
+                title: 'Serving Size',
+                onConfirm: () async {
+                  if (controller.text.isNotEmpty) {
+                    foods.servingSize = double.parse(controller.text);
+                    await Storages.setListFood(foods: foods);
+                    Get.back();
+                    Publics.snackBarSuccess(
+                      'Successfully Added to the Food List',
+                      foods.description!,
+                    );
+                  } else {
+                    Publics.snackBarFail('Fail To Input Serving Size',
+                        'serving size must be filled.');
+                  }
+                },
+                textConfirm: 'OK',
+                content: FormProfile(
+                  label:
+                      'Serving Size  ${foods.servingSizeUnit != null ? '(${foods.servingSizeUnit})' : ''}*',
+                  controller: controller,
+                  keyboardType: TextInputType.number,
+                  autofocus: true,
+                ),
+              );
+            })
+        : IconButton(
+            icon: const ImageIcon(
+              AssetImage(
+                IconApp.close,
+              ),
+              color: Colors.red,
+              size: 20.0,
             ),
-          );
-        });
+            onPressed: () {
+              Get.defaultDialog(
+                title: 'Want to delete this food from list food?',
+                onCancel: () async {
+                  if (controller.text.isNotEmpty) {
+                    await Storages.deleteListFood(foods: foods);
+                  } else {
+                    Publics.snackBarFail('Fail To Input Serving Size',
+                        'serving size must be filled.');
+                  }
+                },
+                textCancel: 'DELETE',
+                content: FormProfile(
+                  label:
+                      'Serving Size  ${foods.servingSizeUnit != null ? '(${foods.servingSizeUnit})' : ''}*',
+                  controller: controller,
+                  keyboardType: TextInputType.number,
+                  autofocus: true,
+                ),
+              );
+            });
   }
 }

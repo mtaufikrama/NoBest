@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +17,40 @@ import 'package:nobes/app/data/services/translate.dart';
 import 'package:nobes/app/data/widget/refresh_page.dart';
 import 'package:nobes/app/modules/inputdata/views/formprofile.dart';
 import 'package:nobes/app/routes/app_pages.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
+import '../../../data/model/tutorial.dart';
 import '../../../data/services/kalkulasi.dart';
 import '../controllers/inputdata_controller.dart';
 
-class InputdataView extends GetView<InputdataController> {
+class InputdataView extends StatefulWidget {
   const InputdataView({super.key});
+
+  @override
+  State<InputdataView> createState() => _InputdataViewState();
+}
+
+class _InputdataViewState extends State<InputdataView> {
+  late TutorialCoachMark tutorialCoachMark;
+
+  GlobalKey keyFoto = GlobalKey();
+  GlobalKey keyFloating = GlobalKey();
+  GlobalKey keyName = GlobalKey();
+  GlobalKey keyHeight = GlobalKey();
+  GlobalKey keyWeight = GlobalKey();
+  GlobalKey keyAge = GlobalKey();
+  GlobalKey keyGender = GlobalKey();
+
+  final controller = Get.put(InputdataController());
+
+  @override
+  void initState() {
+    if (controller.getTutorial.value.inputProfile != true) {
+      createTutorial();
+      Future.delayed(Duration.zero, showTutorial);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +78,7 @@ class InputdataView extends GetView<InputdataController> {
                         aspectRatio: 1,
                         child: Obx(() {
                           return Container(
+                            key: keyFoto,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(1000),
                               image: controller.getProfile.value.image !=
@@ -178,21 +208,25 @@ class InputdataView extends GetView<InputdataController> {
             Column(
               children: [
                 FormProfile(
+                  key: keyName,
                   label: 'Name',
                   keyboardType: TextInputType.name,
                   controller: controller.nameController,
                 ),
                 FormProfile(
+                  key: keyWeight,
                   label: 'Weight (kg)*',
                   keyboardType: TextInputType.number,
                   controller: controller.weightController,
                 ),
                 FormProfile(
+                  key: keyHeight,
                   label: 'Height (cm)*',
                   keyboardType: TextInputType.number,
                   controller: controller.heightController,
                 ),
                 Padding(
+                  key: keyAge,
                   padding: const EdgeInsets.symmetric(
                     vertical: 15,
                     horizontal: 10,
@@ -236,6 +270,7 @@ class InputdataView extends GetView<InputdataController> {
                   ),
                 ),
                 Padding(
+                  key: keyGender,
                   padding: const EdgeInsets.all(10.0),
                   child: DropdownButtonFormField2(
                     decoration: InputDecoration(
@@ -303,6 +338,7 @@ class InputdataView extends GetView<InputdataController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        key: keyFloating,
         onPressed: () async {
           if (controller.weightController.text.isNotEmpty &&
               controller.heightController.text.isNotEmpty &&
@@ -337,5 +373,199 @@ class InputdataView extends GetView<InputdataController> {
         ),
       ),
     );
+  }
+
+  void showTutorial() {
+    tutorialCoachMark.show(context: context);
+  }
+
+  void createTutorial() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: _createTargets(),
+      textStyleSkip: Font.regular(),
+      textSkip: 'SKIP >>',
+      paddingFocus: 10,
+      opacityShadow: 0.5,
+      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+      onFinish: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(inputProfile: true));
+      },
+      onSkip: () async {
+        await Storages.setTutorial(tutorial: TutorialModel(inputProfile: true));
+      },
+    );
+  }
+
+  List<TargetFocus> _createTargets() {
+    List<TargetFocus> targets = [];
+    targets.add(
+      TargetFocus(
+        identify: "Foto",
+        keyTarget: keyFoto,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Profile Photo:\nTo insert a profile photo, you can either capture it using the camera or choose one from the folder.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        radius: 0,
+        identify: "Name",
+        keyTarget: keyName,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Enter name:\nEntering a name is not mandatory, but it will be displayed on the profile page.",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        radius: 0,
+        identify: "Weight",
+        keyTarget: keyWeight,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Enter weight:\nEntering weight is mandatory as it is used to calculate the user's BMI (Body Mass Index) and BMR (Basal Metabolic Rate).",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        radius: 0,
+        identify: "Height",
+        keyTarget: keyHeight,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "Enter height:\nEntering height is mandatory as it is used to calculate the user's BMI (Body Mass Index) and BMR (Basal Metabolic Rate).",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        identify: "Age",
+        keyTarget: keyAge,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return teksLanguage(
+                "age:\nEntering age is mandatory as it is used to calculate the user's BMR (Basal Metabolic Rate).",
+                style: Font.regular(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        radius: 0,
+        identify: "Gender",
+        keyTarget: keyGender,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  teksLanguage(
+                    "Gender:\nPlease specify your gender by selecting 'Male' or 'Female' to calculate your BMR (Basal Metabolic Rate) and BMI (Body Mass Index).",
+                    style: Font.regular(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    targets.add(
+      TargetFocus(
+        identify: "Floating",
+        keyTarget: keyFloating,
+        color: Warna.primary,
+        alignSkip: Alignment.topRight,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  teksLanguage(
+                    "Submit Button:\nUsed to save the data you have inputted.",
+                    style: Font.regular(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+    return targets;
   }
 }

@@ -7,10 +7,10 @@ import 'package:nobes/app/data/services/translate.dart';
 
 class UniverseController extends GetxController {
   final getProfile = Storages.getProfile.obs;
-  final getRecently = Storages.getRecently.obs;
-  final getGenerate = Storages.getGenerate.obs;
+  final getListFood = Storages.getListFood.obs;
+  final getRecommend = Storages.getRecommend.obs;
   final getBahasa = Storages.getBahasa.obs;
-  final getSearch = Storages.getSearch.obs;
+  final getHistory = Storages.getHistory.obs;
   final getTutorial = Storages.getTutorial.obs;
 }
 
