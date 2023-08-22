@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nobes/app/data/services/colors.dart';
 import 'package:nobes/app/data/services/font.dart';
-import 'package:nobes/app/data/services/public.dart';
 import 'app/data/services/getstorages.dart';
 import 'app/routes/app_pages.dart';
 
@@ -13,7 +12,7 @@ void main() async {
   await Hive.openBox(Storages.recommendName);
   await Hive.openBox(Storages.profileName);
   await Hive.openBox(Storages.listName);
-  await Hive.openBox(Storages.searchName);
+  await Hive.openBox(Storages.historyName);
   await Hive.openBox(Storages.bahasaName);
   await Hive.openBox(Storages.tutorialName);
   // await Storages.boxBahasa.clear();
@@ -53,9 +52,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: Publics.controller.getProfile.value.height != null
-          ? AppPages.INITIAL
-          : Routes.INPUTDATA,
+      initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
     );
   }

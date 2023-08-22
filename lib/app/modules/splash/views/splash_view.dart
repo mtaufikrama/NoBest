@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:nobes/app/data/services/colors.dart';
 import 'package:nobes/app/data/services/font.dart';
 
+import '../../../data/services/public.dart';
 import '../../../routes/app_pages.dart';
 
 class SplashView extends StatefulWidget {
@@ -55,7 +56,11 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
     });
 
     Timer(const Duration(seconds: 4), () {
-      Get.offNamed(Routes.HOME);
+      Get.offNamed(
+        Publics.controller.getProfile.value.height != null
+            ? Routes.HOME
+            : Routes.INPUTDATA,
+      );
     });
   }
 
