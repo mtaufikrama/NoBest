@@ -24,7 +24,7 @@ class CardFood extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Get.toNamed(Routes.FOOD,
-          parameters: {'fdcid': foods.fdcId.toString()}),
+          parameters: {'fdcid': foods.fdcId.toString()}, arguments: foods),
       child: Card(
         child: Column(
           children: [

@@ -44,7 +44,7 @@ class Publics {
           title,
           isCapitalized: true,
           style: Font.regular(
-            color: Colors.green,
+            color: Colors.black,
           ),
         ),
         messageText: teksLanguage(

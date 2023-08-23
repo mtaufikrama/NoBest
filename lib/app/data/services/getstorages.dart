@@ -30,7 +30,9 @@ class Storages {
 
   static Future<void> deleteListFood({required Foods foods}) async {
     final listfood = Storages.getListFood;
-    listfood.remove(foods);
+    listfood.removeWhere(
+      (element) => Foods.fromJson(element).fdcId == foods.fdcId,
+    );
     await boxListFood.clear();
     await boxListFood.addAll(listfood);
     Publics.controller.getListFood.value = Storages.getListFood;

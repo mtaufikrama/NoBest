@@ -737,7 +737,7 @@ class HomeView extends StatelessWidget {
                                                 MainAxisAlignment.end,
                                             children: [
                                               teksLanguage(
-                                                '- ${(Kalkulator.kkt.toInt() - controller.nilaiKcal.toInt()).toStringAsFixed(2)} kcal',
+                                                '- ${(Kalkulator.kkt - controller.nilaiKcal).toStringAsFixed(2)} kcal',
                                                 style: Font.number(),
                                               ),
                                             ],
@@ -749,6 +749,7 @@ class HomeView extends StatelessWidget {
                                                     .toInt(),
                                                 child: const Divider(
                                                   thickness: 5,
+                                                  color: Colors.blue,
                                                 ),
                                               ),
                                               Expanded(

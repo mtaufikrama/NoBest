@@ -26,11 +26,11 @@ class ListfoodView extends GetView<ListfoodController> {
       ),
       body: RefreshPage(
         routes: Routes.LISTFOOD,
-        child: controller.getRecently.isNotEmpty
+        child: controller.getListFood.isNotEmpty
             ? ListView.builder(
-                itemCount: controller.getRecently.length,
+                itemCount: controller.getListFood.length,
                 itemBuilder: (BuildContext context, int index) {
-                  Foods foods = Foods.fromJson(controller.getRecently[index]);
+                  Foods foods = Foods.fromJson(controller.getListFood[index]);
                   final servingSizeController = TextEditingController();
                   return CardFood(
                     foods: foods,

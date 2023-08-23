@@ -10,6 +10,10 @@ import 'package:nobes/app/data/services/kalkulasi.dart';
 import 'package:nobes/app/data/services/translate.dart';
 import 'package:nobes/app/data/widget/refresh_page.dart';
 import 'package:nobes/app/routes/app_pages.dart';
+import '../../../data/model/usda_search.dart';
+import '../../../data/services/getstorages.dart';
+import '../../../data/services/public.dart';
+import '../../inputdata/views/formprofile.dart';
 import '../controllers/food_controller.dart';
 
 class FoodView extends GetView<FoodController> {
@@ -340,6 +344,87 @@ class FoodView extends GetView<FoodController> {
               )
             : Center(child: Text("Food is Empty", style: Font.regular())),
       ),
+      floatingActionButton: AddFoods(
+          foods: controller.foods,
+          controller: controller.servingSizeController),
     );
+  }
+}
+
+class AddFoods extends StatelessWidget {
+  final Foods foods;
+  final TextEditingController controller;
+  const AddFoods({super.key, required this.foods, required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final foodList = Publics.controller.getListFood
+        .map((element) => Foods.fromJson(element).fdcId ?? 0)
+        .toList();
+    controller.text = (foods.servingSize ?? 0).toInt().toString();
+    return foodList.contains(foods.fdcId ?? 0) != true
+        ? FloatingActionButton(
+            backgroundColor: Warna.primary,
+            child: const ImageIcon(
+              AssetImage(
+                IconApp.add,
+              ),
+            ),
+            onPressed: () {
+              Get.defaultDialog(
+                title: 'Serving Size',
+                onConfirm: () async {
+                  if (controller.text.isNotEmpty) {
+                    foods.servingSize = double.parse(controller.text);
+                    await Storages.setListFood(foods: foods);
+                    Get.back();
+                    Publics.snackBarSuccess(
+                      'Successfully Added to the Food List',
+                      foods.description!,
+                    );
+                  } else {
+                    Publics.snackBarFail('Fail To Input Serving Size',
+                        'serving size must be filled.');
+                  }
+                  Get.offNamed(Routes.FOOD,
+                      parameters: {'fdcid': foods.fdcId.toString()},
+                      arguments: foods);
+                },
+                textConfirm: 'ADD',
+                content: FormProfile(
+                  label:
+                      'Serving Size  ${foods.servingSizeUnit != null ? '(${foods.servingSizeUnit})' : ''}*',
+                  controller: controller,
+                  keyboardType: TextInputType.number,
+                  autofocus: true,
+                ),
+              );
+            })
+        : FloatingActionButton(
+            backgroundColor: Colors.red,
+            child: const ImageIcon(
+              AssetImage(
+                IconApp.close,
+              ),
+            ),
+            onPressed: () {
+              Get.defaultDialog(
+                title: 'Delete this food?',
+                onCancel: () async {
+                  await Storages.deleteListFood(foods: foods);
+                  Publics.snackBarSuccess(
+                    'Successfully Deleted to the Food List',
+                    foods.description!,
+                  );
+                  Get.offNamed(Routes.FOOD,
+                      parameters: {'fdcid': foods.fdcId.toString()},
+                      arguments: foods);
+                },
+                textCancel: 'DELETE',
+                buttonColor: Colors.red,
+                cancelTextColor: Colors.red,
+                content: const Text("Want to delete this food from list food?"),
+              );
+            });
   }
 }

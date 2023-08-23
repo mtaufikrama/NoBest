@@ -44,7 +44,7 @@ class AddFood extends StatelessWidget {
                         'serving size must be filled.');
                   }
                 },
-                textConfirm: 'OK',
+                textConfirm: 'ADD',
                 content: FormProfile(
                   label:
                       'Serving Size  ${foods.servingSizeUnit != null ? '(${foods.servingSizeUnit})' : ''}*',
@@ -64,23 +64,18 @@ class AddFood extends StatelessWidget {
             ),
             onPressed: () {
               Get.defaultDialog(
-                title: 'Want to delete this food from list food?',
+                title: 'Delete this food?',
                 onCancel: () async {
-                  if (controller.text.isNotEmpty) {
-                    await Storages.deleteListFood(foods: foods);
-                  } else {
-                    Publics.snackBarFail('Fail To Input Serving Size',
-                        'serving size must be filled.');
-                  }
+                  await Storages.deleteListFood(foods: foods);
+                  Publics.snackBarSuccess(
+                    'Successfully Deleted to the Food List',
+                    foods.description!,
+                  );
                 },
+                buttonColor: Colors.red,
+                cancelTextColor: Colors.red,
                 textCancel: 'DELETE',
-                content: FormProfile(
-                  label:
-                      'Serving Size  ${foods.servingSizeUnit != null ? '(${foods.servingSizeUnit})' : ''}*',
-                  controller: controller,
-                  keyboardType: TextInputType.number,
-                  autofocus: true,
-                ),
+                content: const Text("Want to delete this food from list food?"),
               );
             });
   }
