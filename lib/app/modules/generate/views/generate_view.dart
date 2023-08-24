@@ -390,7 +390,7 @@ class GenerateView extends GetView<GenerateController> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: teksLanguage(
-                                          'Food List',
+                                          'Dream Food',
                                           style: Font.regular(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.w500,
@@ -436,7 +436,7 @@ class GenerateView extends GetView<GenerateController> {
                                   Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: teksLanguage(
-                                      'Food list is Not Available',
+                                      'Dream Food is Not Available',
                                       style: Font.regular(
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.w500,
@@ -454,7 +454,7 @@ class GenerateView extends GetView<GenerateController> {
                                         backgroundColor: Colors.blueGrey),
                                     onPressed: () => Get.toNamed(Routes.SEARCH),
                                     label: teksLanguage(
-                                      "Add Food List",
+                                      "Add Dream Food",
                                       style: Font.regular(),
                                     ),
                                   ),
@@ -491,7 +491,7 @@ class GenerateView extends GetView<GenerateController> {
           } else {
             Publics.snackBarFail(
               'Fail to Process',
-              'Profile and Food List must be filled',
+              'Dream Food must be filled',
             );
           }
         },

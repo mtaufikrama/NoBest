@@ -111,11 +111,13 @@ class ProfileView extends GetView<ProfileController> {
                       //   style: Font.regular(fontSize: 18),
                       // ),
                       Text(
-                        controller.getBahasa.value == 'en' ? 'BMI' : 'IMT',
+                        controller.getBahasa.value != 'id' ? 'BMI' : 'IMT',
                         style: Font.regular(fontSize: 18),
                       ),
                       Text(
-                        controller.getBahasa.value == 'en' ? 'TDEE' : 'KKT',
+                        controller.getBahasa.value != 'id'
+                            ? 'Calorie Needs'
+                            : 'Kebutuhan Kalori',
                         style: Font.regular(fontSize: 18),
                       ),
                       teksLanguage(

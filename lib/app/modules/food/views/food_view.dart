@@ -379,7 +379,7 @@ class AddFoods extends StatelessWidget {
                     await Storages.setListFood(foods: foods);
                     Get.back();
                     Publics.snackBarSuccess(
-                      'Successfully Added to the Food List',
+                      'Successfully Added to the Dream Food',
                       foods.description!,
                     );
                   } else {
@@ -413,7 +413,7 @@ class AddFoods extends StatelessWidget {
                 onCancel: () async {
                   await Storages.deleteListFood(foods: foods);
                   Publics.snackBarSuccess(
-                    'Successfully Deleted to the Food List',
+                    'Successfully Deleted to the Dream Food',
                     foods.description!,
                   );
                   Get.offNamed(Routes.FOOD,

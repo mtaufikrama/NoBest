@@ -298,7 +298,7 @@ class HomeView extends StatelessWidget {
                                                           .kaloriPembakaran ==
                                                       null
                                                   ? teksLanguage(
-                                                      'Energy Deficit',
+                                                      'Deficit Calorie',
                                                       style: Font.regular(
                                                           fontSize: 14),
                                                     )
@@ -553,7 +553,7 @@ class HomeView extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      Kalkulator.kkt.toStringAsFixed(2),
+                                      "${Kalkulator.kkt.toStringAsFixed(2)} kcal",
                                       style: Font.number(
                                         fontSize: 20.0,
                                         color: Warna.baseWhite,

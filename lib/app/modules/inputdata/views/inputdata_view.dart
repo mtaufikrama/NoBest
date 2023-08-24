@@ -98,6 +98,7 @@ class InputdataView extends GetView<InputdataController> {
                                           shape: const RoundedRectangleBorder(),
                                         ),
                                         onPressed: () async {
+                                          Get.back();
                                           final ImagePicker picker =
                                               ImagePicker();
                                           final XFile? image =
