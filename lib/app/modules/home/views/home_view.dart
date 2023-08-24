@@ -898,7 +898,7 @@ class HomeView extends StatelessWidget {
               child: const ImageIcon(AssetImage(IconApp.setting)),
               onPressed: () => Get.toNamed(Routes.GENERATE)),
           FloatingActionButton.small(
-            tooltip: 'List Food',
+            tooltip: 'Dream Food',
             heroTag: IconApp.note,
             child: const ImageIcon(AssetImage(IconApp.note)),
             onPressed: () => Get.toNamed(Routes.LISTFOOD),

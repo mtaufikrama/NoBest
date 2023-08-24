@@ -423,7 +423,8 @@ class AddFoods extends StatelessWidget {
                 textCancel: 'DELETE',
                 buttonColor: Colors.red,
                 cancelTextColor: Colors.red,
-                content: const Text("Want to delete this food from list food?"),
+                content:
+                    const Text("Want to delete this food from dream food?"),
               );
             });
   }

@@ -18,7 +18,7 @@ class ListfoodView extends GetView<ListfoodController> {
     return Scaffold(
       appBar: AppBar(
         title: teksLanguage(
-          'List Food',
+          'Dream Food',
           style: Font.regular(),
         ),
         centerTitle: true,
@@ -41,7 +41,7 @@ class ListfoodView extends GetView<ListfoodController> {
               )
             : Center(
                 child: Text(
-                  "List Food is Empty",
+                  "Dream Food is Empty",
                   style: Font.regular(
                     fontSize: 12.0,
                   ),
