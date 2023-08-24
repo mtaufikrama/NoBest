@@ -92,8 +92,8 @@ class Kalkulator {
           required double height,
           required double age}) =>
       isMan == true
-          ? 655.1 + (9.563 * weight) + (1.850 * height) + (4.676 * age)
-          : 66.5 + (13.75 * weight) + (5.003 * height) + (6.775 * age);
+          ? 655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age)
+          : 66.5 + (13.75 * weight) + (5.003 * height) - (6.775 * age);
 
   // umur
   static int umur(String dateString) {
